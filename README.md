@@ -13,7 +13,7 @@ Read these before you start:
 !["enigma2 interface"](interface.png)
 
 
-## **1) Running enigma2**
+**1) Running enigma2**
 
 
 Create a folder named **enigma2** somewhere in your computer and place all the files of **enigma2** inside of it just like in the [Installation Instructions](/Installation%20Instructions.md).     
@@ -55,6 +55,8 @@ For all the images on which you ran the **Automated** method in the previous ste
 In this step, the [Registration to template](https://spinalcordtoolbox.com/user_section/tutorials/registration-to-template.html) method will be automatically performed for each individual according to the Spinal Cord Toolbox method.  
 
 **6) Data Extraction**  
+
+The **Data Extraction** button prompts the user to select individuals within the **spine** folder for whom they wish to automatically calculate the Cross Sectional Area (CSA) and Eccentricity values. Additionally, other morphometric measurements will be computed based on the `sct_process_segmentation` command from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/getting-started.html) tutorial.  
 
 
 
