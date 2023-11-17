@@ -18,6 +18,10 @@
 
 **2) Updating Packages**  
 
-- Run the following commands on Linux Terminal:
+- Run the following commands on Linux Terminal to install all packages dependencies:
+
+  `pip install Pillow` or `pip3 install Pillow` or if you already have it installed, just run `pip install --upgrade Pillow`
+
+  
 
   
