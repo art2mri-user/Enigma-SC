@@ -29,9 +29,21 @@
 - You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling if you prefer. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
 
   ### Docker
+  
   If you have already installed correctly the Docker Engine, just run the following command on Linux Terminal:
    - `sudo docker pull art2mri/vertebral_labeling:1.0`
-   - 
+
+  ### Singularity
+
+  If you have correctly installed the Singularity, just open the Linux terminal in the same path where you have installed it run the following command:
+  - `sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0`
+  - After that, a folder named ***vertebral_labeling.simg***
+ 
+## 4) enigma2 folder  
+
+Now, all you have to do is to create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder also.
+
+  
    
   
 
