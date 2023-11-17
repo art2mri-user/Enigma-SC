@@ -24,6 +24,10 @@ To open the **enigma2** interface, open a terminal inside of the **enigma2** fol
 
 The first thing the user should do is to create a folder named **input** somewhere and place all desired .nii.gz files inside this folder so that the following steps can be performed. 
 
-The Prepare Folder buttons takes all the files inside of the **input** folder, and divide them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder.
+The **Prepare Folders** buttons takes all the files inside of the **input** folder, and divide them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder.  
+
+By clicking on the **Prepare Folders button** a filedialog box will open, and then you can choose all the .nii.gz files inside of the **input** folder. After that, you are ready to segment them.  
+
+**3) Prepare Folders** 
  
 
