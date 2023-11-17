@@ -14,7 +14,7 @@ Read these before you start:
 
 **1) Running enigma2** 
 
-Create a folder named **enigma2** somewhere in your computer and place all the files of enigma2 inside of it.  
+Create a folder named **enigma2** somewhere in your computer and place all the files of enigma2 inside of it just like in the [Installation Instructions](/Installation%20Instructions.md).   
 
 To see how to create the **vertebral_labeling.simg** folder correctly, please read the [Installation Instructions](/Installation%20Instructions.md). It will only be necessary if you want to run the predictions via the [Singularity Platform](https://singularity-userdoc.readthedocs.io/en/latest/).
 
