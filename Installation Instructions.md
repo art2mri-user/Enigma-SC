@@ -37,7 +37,8 @@
 
   If you have correctly installed the Singularity, just open the Linux terminal in the same path where you have installed it run the following command:
   - `sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0`
-  - After that, a folder named ***vertebral_labeling.simg***
+  - After that, a folder named ***vertebral_labeling.simg*** will appear on the Singularity folder.
+  - Run the following command on the terminal, to avoid any permission related problems: `sudo chmod -R 777 vertebral_labeling.simg`  
  
 ## 4) enigma2 folder  
 
