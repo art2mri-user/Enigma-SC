@@ -12,7 +12,13 @@ Read these before you start:
 
 !["enigma2 interface"](interface.png)
 
-**1) Prepare Folders** 
+**1) Running enigma2** 
+
+Create a folder named **enigma2** somewhere in your computer and place all the files of enigma2 inside of it.  
+
+To see how to create the **vertebral_labeling.simg** folder correctly, please read the [Installation Instructions](/Installation%20Instructions.md). It will only be necessary if you want to run the predictions via the Singularity Platform.
+
+**2) Prepare Folders** 
 
 The first thing the user should do is to create a folder named **input** and place all desired .nii.gz files inside this folder so that the following steps can be performed. 
 
