@@ -30,7 +30,7 @@
 
   ### Docker
   
-  If you have already installed correctly the Docker Engine, just run the following command on Linux Terminal:
+  If you have already correctly installed the Docker Engine, just run the following command on Linux Terminal:
    - `sudo docker pull art2mri/vertebral_labeling:1.0`
 
   ### Singularity
