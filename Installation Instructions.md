@@ -21,8 +21,14 @@
 - Run the following commands on Linux Terminal to install all packages dependencies:
 
   - `pip install Pillow` or `pip3 install Pillow` or if you already have it installed, just run `pip install --upgrade Pillow`
-  - `sudo apt-get install python3-tk` or `pip3 install tkfilebrowser`  
+  - `sudo apt-get install python3-tk` or `pip3 install tkfilebrowser`
 
+ 
+## 3) Docker and Singularity Containers  
+
+- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling if you prefer. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
+- 
+- 
   
 
   
