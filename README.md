@@ -13,7 +13,7 @@ Read these before you start:
 !["enigma2 interface"](interface.png)
 
 
-**1) Running enigma2**
+## **1) Running enigma2**
 
 
 Create a folder named **enigma2** somewhere in your computer and place all the files of **enigma2** inside of it just like in the [Installation Instructions](/Installation%20Instructions.md).     
@@ -53,6 +53,10 @@ If you choose to run the **Manual** method, for each incorrect segmentation gene
 For all the images on which you ran the **Automated** method in the previous step, you should run the **Spinal Cord Registration** button located just below the **Automated** button. A file dialog box will appear, and you need to select all corresponding individuals in the **spine** folder. Similarly, for all the images you processed using the **Manual** button, you should run the **Spinal Cord Registration** button located just below the **Manual** button and select all corresponding individuals in the **spine** folder.  
 
 In this step, the [Registration to template](https://spinalcordtoolbox.com/user_section/tutorials/registration-to-template.html) method will be automatically performed for each individual according to the Spinal Cord Toolbox method.  
+
+**6) Data Extraction**  
+
+
 
 
 
