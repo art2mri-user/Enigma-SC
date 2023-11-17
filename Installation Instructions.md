@@ -20,7 +20,10 @@
 
 - Run the following commands on Linux Terminal to install all packages dependencies:
 
-  `pip install Pillow` or `pip3 install Pillow` or if you already have it installed, just run `pip install --upgrade Pillow`
+  - `pip install Pillow` or `pip3 install Pillow` or if you already have it installed, just run `pip install --upgrade Pillow`
+  - `sudo apt-get install python3-tk` or `pip3 install tkfilebrowser`  
+
+  
 
   
 
