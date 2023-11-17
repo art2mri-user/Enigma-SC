@@ -26,7 +26,7 @@
  
 ## 3) Docker and Singularity Containers  
 
-- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling if you prefer. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
+- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling (if you prefer). The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
 
   ### Docker
   
