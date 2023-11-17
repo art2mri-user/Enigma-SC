@@ -4,7 +4,7 @@
 
 - This software has been developed to achieve its best performance on the Ubuntu 20.04, Ubuntu 20.10, and MacOS operating systems.
 
-- The enigma2 SCT fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
+- The **enigma2** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
   Python 3.10.12 (or more recent versions) - [Installation](https://www.python.org/downloads/)  
   SCT 5.8 (or more recent versions) - [Installation](https://spinalcordtoolbox.com/index.html)  
