@@ -22,7 +22,7 @@ To open the **enigma2** interface, open a terminal inside of the **enigma2** fol
 
 **2) Prepare Folders** 
 
-The first thing the user should do is to create a folder named **input** and place all desired .nii.gz files inside this folder so that the following steps can be performed. 
+The first thing the user should do is to create a folder named **input** somewhere and place all desired .nii.gz files inside this folder so that the following steps can be performed. 
 
 The Prepare Folder buttons takes all the files inside of the **input** folder, and divide them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder.
  
