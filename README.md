@@ -12,3 +12,5 @@ Read these before you start:
 
 !["enigma2 interface"](interface.png)
 
+1) Prepare Folders
+
