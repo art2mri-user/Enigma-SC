@@ -30,7 +30,9 @@ By clicking on the **Prepare Folders button** a filedialog box will open, and th
 
 **3) Spinal Cord Segmentation**  
 
-By clicking on this button, the **enigma2** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html).  
+By clicking on this button, the **enigma2** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step.  
+
+But now, after clicking on the **Spinal Cord Segmentation** button, you will select all the folders inside the **spine** folder corresponding to the previously selected .nii.gz images.
 
 
  
