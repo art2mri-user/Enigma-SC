@@ -60,7 +60,11 @@ The **Data Extraction** button prompts the user to select individuals within the
 
 Furthermore, two .csv spreadsheets will be generated within the **spine** folder. The first one will be named 'csa_final_table_(mm+dd+yyyy)(hh+mm+ss),' where the information within parentheses corresponds to the date and time of execution, formatted as (month-day-year)(hour-minutes-seconds). The following spreadsheet will be named 'eccentricity_table_(mm+dd+yyyy)_(hh+mm+ss),' following the same format as the previous table.  
 
-In both spreadsheets, you will find the names of all the individuals you selected in the 'subject' column, followed by their respective CSA and Eccentricity values (each in its own spreadsheet). In the 'csa_final_table_' spreadsheet, you will find the CSA values corresponding to each vertebral level (C1, C2, and C3), already corrected for orthogonalization with respect to the AP and RL angles, considering the average as: \[ CSA = \frac{{\text{{Mean(area)}} \cdot \cos(\theta_{\text{{AP}}}) + \text{{Mean(area)}} \cdot \cos(\theta_{\text{{RL}}})}}{2} \]
+In both spreadsheets, you will find the names of all the individuals you selected in the 'subject' column, followed by their respective CSA and Eccentricity values (each in its own spreadsheet). In the 'csa_final_table_' spreadsheet, you will find the CSA values corresponding to each vertebral level (C1, C2, and C3), already corrected for orthogonalization with respect to the AP and RL angles, considering the average as: 
+
+$$
+CSA = \frac{{\text{{Mean (area)}} \cdot \cos(\text{{theta AP}}) + \text{{Mean (area)}} + \cos(\text{{theta RL}})}}{2}
+$$
 
 
 
