@@ -12,5 +12,5 @@ Read these before you start:
 
 !["enigma2 interface"](interface.png)
 
-<span style="font-size:larger;">**1) Prepare Folders**</span>
+**1) Prepare Folders**
 
