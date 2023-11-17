@@ -1,6 +1,6 @@
 # Installation Instructions
 
-**1) System Requirements**  
+## 1) System Requirements  
 
 - This software has been tested and achieves its best performance on the Ubuntu 20.04, Ubuntu 20.10, Ubuntu 22.04 and MacOS operating systems.
 
@@ -16,7 +16,7 @@
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-**2) Updating Packages**  
+## 2) Updating Packages  
 
 - Run the following commands on Linux Terminal to install all packages dependencies:
 
