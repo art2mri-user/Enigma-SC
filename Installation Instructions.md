@@ -42,7 +42,7 @@
  
 ## 4) enigma2 folder  
 
-Now, all you have to do is to create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder also. 
+Now, all you have to do is to create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. 
 
 Just to remind you, after you downloaded files and extracted it, a *enigma2-main* folder will be created, don't forget to rename it to *enigma2*. Tou can place this folder anywhere you want.
 
