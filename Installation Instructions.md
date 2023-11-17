@@ -1,5 +1,5 @@
 # Installation Instructions
 
-**1) System Requirements **  
+**1) System Requirements**  
 
 a
