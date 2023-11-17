@@ -12,7 +12,7 @@ Read these before you start:
 
 !["enigma2 interface"](interface.png)
 
-**1) Running enigma2** 
+<p style="font-size:18px;">**1) Running enigma2**</p>p> 
 
 Create a folder named **enigma2** somewhere in your computer and place all the files of **enigma2** inside of it just like in the [Installation Instructions](/Installation%20Instructions.md).     
 
