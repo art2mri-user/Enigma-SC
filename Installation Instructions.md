@@ -45,7 +45,8 @@
 To download and install enigma2, open a terminal and type:  
   
 ```bash
-git clone https://github.com/art2mri/enigma2.git&&sudo chmod -R 777 enigma2/enigma2.sh
+git clone https://github.com/art2mri/enigma2.git  
+sudo chmod -R 777 enigma2/enigma2.sh
 ```   
  
  It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. Tou can move the entire folder to any other locations, but never changing its name**. 
