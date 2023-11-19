@@ -40,7 +40,9 @@
   - After that, a folder named ***vertebral_labeling.simg*** will appear on the Singularity folder.
   - Run the following command on the terminal: `sudo chmod -R 777 vertebral_labeling.simg` to avoid any permission related problems.   
  
-## 4) Download and Install enigma2  
+## 4) Download and Install enigma2 
+
+### Option 1  
 
 To download and install enigma2, open a terminal and type:  
   
@@ -49,11 +51,13 @@ git clone https://github.com/art2mri/enigma2.git
 sudo chmod -R 777 enigma2/enigma2.sh
 ```   
  
- It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. Tou can move the entire folder to any other locations, but never changing its name**. 
+ It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**. 
 
-Now, all you have to do is to create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. 
+ ### Option 2  
+ 
+Optionally, you may create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. After that, open a terminal inside of the enigma2 folder and type: `sudo chmod -R 777 enigma2.sh'. **Just to remind you, after you downloaded the files and extracted it, a *enigma2-main* folder will be created, don't forget to rename it to *enigma2*. You can place this enigma2 folder anywhere you want.** 
 
-Just to remind you, after you downloaded files and extracted it, a *enigma2-main* folder will be created, don't forget to rename it to *enigma2*. You can place this folder anywhere you want.
+
 
   
    
