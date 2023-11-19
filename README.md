@@ -32,6 +32,8 @@ The **Prepare Folders** button takes all the files inside of the **input** folde
 
 By clicking on the **Prepare Folders button** a file dialog box will open, and then you can choose all the .nii.gz files inside of the **input** folder. After that, you are ready to segment them.  
 
+!["step2"](/img/step2.png)
+
 ## 3) Spinal Cord Segmentation 
 
 By clicking on this button, the **enigma2** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step.  
