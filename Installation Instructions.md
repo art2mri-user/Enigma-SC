@@ -57,7 +57,7 @@ sudo chmod -R 777 enigma2/enigma2.sh
 
  ### Option 2  
  
-Optionally, you may create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. After that, open a terminal inside of the enigma2 folder and type: `sudo chmod -R 777 enigma2.sh'. **Just to remind you, after you downloaded the files and extracted it, a *enigma2-main* folder will be created, don't forget to rename it to *enigma2*. You can place this enigma2 folder anywhere you want.** 
+Optionally, you may create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. After that, open a terminal inside of the enigma2 folder and type: `sudo chmod -R 777 enigma2.sh'. **Just to remind you, after you downloaded the files and extracted it, a *enigma2-main* folder will be created, don't forget to rename it to *enigma2*.** You can place this enigma2 folder anywhere you want.  
 
 
 ## 5) Opening the enigma2 interface  
