@@ -50,7 +50,7 @@ The **Vertebral Labeling** can be performed in two ways, either by the **Automat
 
 The **Automated** method will predict a segmentation mask for each .nii.gz image, using a [nnunetv2](https://github.com/MIC-DKFZ/nnUNet) model trained from our pipeline according to this [paper](). After that, a seg_labeled.nii.gz file will be created and placed inside of each correspondigly folder of each individual inside of the **spine** folder. 
 
-!["step8"](/img/step8.png)  
+!["step7"](/img/step7.png)  
 
 By clicking on the **Automated** button, a small checkbox box will open, and you can choose between [Docker](https://www.docker.com/) or [Singularity](https://singularity-userdoc.readthedocs.io/en/latest/) containerization platforms. If you choose **Docker**, immediately after that, you can select the folders within the **spine** folder that you want to run the **Automated** method on, and then the mask generation process will start. The Linux user password will be requested before initiating the process. If you choose **Singularity**, a file dialog box will first prompt you to select the **enigma2** folder on your computer, and after that, you can choose the folders within the **spine** folder that you want to run the Automated method on.  
 
