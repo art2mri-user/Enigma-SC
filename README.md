@@ -10,7 +10,7 @@ An optimized deep learning-based method for spinal cord vertebral labeling.
 Read these before you start:  
 [Installation Instructions](/Installation%20Instructions.md)
 
-!["enigma2 interface"](interface.png)
+!["enigma2 interface"](img/interface.png)
 
 
 ## 1) Running enigma2
