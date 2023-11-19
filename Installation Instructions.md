@@ -43,9 +43,12 @@
 ## 4) Download and Install enigma2  
 
 To download and install enigma2, open a terminal and type:  
-`git clone https://github.com/art2mri/enigma2.git`  
-`sudo chmod -R 777 enigma2/enigma2.sh`  
-It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. Tou can move the entire folder to any other locations, but never changing its name**.  
+
+```bash
+git clone https://github.com/art2mri/enigma2.git&&sudo chmod -R 777 enigma2/enigma2.sh
+``` 
+ 
+ It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. Tou can move the entire folder to any other locations, but never changing its name**. 
 
 Now, all you have to do is to create a folder named **enigma2** somewhere in your computer, and [download all this files](../../archive/main.zip) inside of it, including the ***vertebral_labeling.simg*** folder you have created from the previous step, you should cut it and place inside of the **enigma2** folder. 
 
