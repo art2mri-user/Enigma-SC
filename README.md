@@ -16,11 +16,11 @@ Read these before you start:
 ## 1) Running enigma2
 
 
-Create a folder named **enigma2** somewhere in your computer and place all the files of **enigma2** inside of it just like in the [Installation Instructions](/Installation%20Instructions.md).     
+Please don't forget to check if you have correctly installed all the requirements listed on [Installation Instructions](/Installation%20Instructions.md) before you run it. After that, you are ready to start.    
 
 To see how to create the **vertebral_labeling.simg** folder correctly, please read the [Installation Instructions](/Installation%20Instructions.md). It will only be necessary if you want to run the predictions via the [Singularity Platform](https://singularity-userdoc.readthedocs.io/en/latest/).
 
-To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type `./enigma2.sh`. Please don't forget to check if you have correctly installed all the requirements listed on [Installation Instructions](/Installation%20Instructions.md) before you run it.
+To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type `./enigma2.sh`. You will see the enigma2 interface just like in the picture above.
 
 ## 2) Prepare Folders 
 
