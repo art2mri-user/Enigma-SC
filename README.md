@@ -82,7 +82,9 @@ $$
 
 ## 7) Pack and Send   
 
-And finally, the **Pack and Send** button will require the user to select all individuals within the **spine** folder whom they wish to compress into a single .zip file. This will include everything generated throughout the previous steps. The compressed files for each individual will be placed within the **spine** folder (excluding the raw .nii.gz image), and they will be ready to be sent!
+And finally, the **Pack and Send** button will require the user to select all individuals within the **spine** folder whom they wish to compress into a single .zip file. This will include everything generated throughout the previous steps. The compressed files for each individual will be placed within the **spine** folder (excluding the raw .nii.gz image), and they will be ready to be sent!  
+
+!["step10"](/img/step10.png)
 
 
 
