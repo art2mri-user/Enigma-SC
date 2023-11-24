@@ -62,7 +62,7 @@ Optionally, you may create a folder named **enigma2** somewhere in your computer
 
 ## 5) Opening the enigma2 interface  
 
-To open the enigma2 interface, all you have to do is to open a terminal inside of the **enigma2** folder and type: `./enigma2.sh` 
+To open the enigma2 interface, all you have to do is to open a terminal inside of the **enigma2** folder and type: `sudo ./enigma2.sh` 
 
 
 
