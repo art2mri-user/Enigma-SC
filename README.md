@@ -1,9 +1,13 @@
 # enigma2
 An optimized deep learning-based method for upper spinal cord vertebral labeling.
 
-# What is enigma2 ?
+# What is enigma2 ?  
+The Enigma Spinal Cord (Enigma-SC) pipeline is an harmonized tool devoted to assess the upper spinal cord acquired on brain T1-weighted images using, mainly, the Spinal Cord Toolbox (De Leener et al, 2017). Although this newest version encopass an deep learning algorithm to identify automatically the spinal cord vertebral labels. This feature has been optimized to deal with sereraly atrophied and curved spinal cords. 
+
+De Leener B, Lévy S, Dupont SM, Fonov VS, Stikov N, Louis Collins D, Callot V, Cohen-Adad J. SCT: Spinal Cord Toolbox, an open-source software for processing spinal cord MRI data. Neuroimage. 2017 Jan 15;145(Pt A):24-43. doi: 10.1016/j.neuroimage.2016.10.009. Epub 2016 Oct 5. PMID: 27720818.
 
 # How does the enigma2 work ?
+Enigma-SC needs brain T1-weighted images covering, at least, C2 vertebral level to works. This pipeline standardize the coumputation of cross-sectional area (CSA) and eccentricity provided by SCT (De Leener et al, 2017) in a fully automated fashion way. The spinal cord vertebral labeling was developed using deep learning algorithms (nnUnet) (REF) on a trainning datased composed by NNN healthy controls and NNN subjects with molecular confirmation of inherited cerebellar ataxias (NNN SCA1, NNN SCA2, NNN SCA3, NNN SCA6, NNN SCA7 and NNN Friedreich's Ataxia) from 11 sites worldwide (University of Campinas-Brazil, Monash University-Australia, University of Minnesota-USA, RWTH Aachen University-Germany, University of Duisburg-Essen-Germany, University Hospital of Tübingen-Germany, Pitié-Salpêtrière University-France, Universidad Nacional Autonoma de Mexico-Mexico, Federal University of Paraná-Brazil, Fondazione IRCCS Istituto Neurologico Carlo Besta-Italy, Radboud University Medical Center-Netherlands).  
 
 # Getting started
 
