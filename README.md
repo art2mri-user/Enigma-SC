@@ -1,5 +1,5 @@
 # enigma2
-An optimized deep learning-based method for spinal cord vertebral labeling.
+An optimized deep learning-based method for upper spinal cord vertebral labeling.
 
 # What is enigma2 ?
 
