@@ -11,7 +11,7 @@ Enigma-SC needs brain T1-weighted images covering, at least, C2 vertebral level 
 
 # Getting started
 
-Read these before you start:  
+**Read these before you start:**  
 [Installation Instructions](/Installation%20Instructions.md)
 
 !["enigma2 interface"](img/interface.png)
