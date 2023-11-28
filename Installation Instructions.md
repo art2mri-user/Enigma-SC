@@ -72,7 +72,7 @@ source venv/bin/activate
   
   If you have already correctly installed the Docker Engine, just run the following command on Linux Terminal:
    - ```bash
-     sudo docker pull art2mri/vertebral_labeling:1.0
+     sudo docker pull art2mri/vertebral_labeling:2.0
      ```
      
   ### Singularity
