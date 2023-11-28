@@ -26,8 +26,6 @@ To see how to create the **vertebral_labeling.simg** folder correctly, please re
 
 To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type `source venv/bin/activate` and then `./enigma2.sh`. You will see the enigma2 interface just like in the picture above.  
 
-!["step1"](/img/step1.png)
-
 ## 2) Prepare Folders 
 
 The first thing the user should do is to create a folder named **input** somewhere and place all desired .nii.gz files inside this folder so that the following steps can be performed. 
