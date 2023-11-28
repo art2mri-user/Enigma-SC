@@ -18,6 +18,8 @@
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
+  Once you have installed the CUDA, open a terminal and type `nvidia-smi` to check if it was correctly installed.  
+  
 ## 2) Download and Install enigma2 
 
 ### Installing enigma2
