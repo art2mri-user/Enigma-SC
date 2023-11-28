@@ -33,7 +33,7 @@ sudo chmod -R 777 enigma2/enigma2.sh
 
  ### Installing virtual environment to run enigma2 
 
- Inside of the enigma2 folder, open a terminal and type the following commands:  
+ Inside of the **enigma2** folder, open a terminal and type the following commands:  
 
  ```bash
 pip install virtualenv
