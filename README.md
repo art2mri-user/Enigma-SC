@@ -24,7 +24,13 @@ Please don't forget to check if you have correctly installed all the requirement
 
 To see how to create the **vertebral_labeling.simg** folder correctly, please read the [Installation Instructions](/Installation%20Instructions.md). It will only be necessary if you want to run the predictions via the [Singularity Platform](https://singularity-userdoc.readthedocs.io/en/latest/).
 
-To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type `source venv/bin/activate` and then `./enigma2.sh`. You will see the enigma2 interface just like in the picture above.  
+To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type:  
+
+```bash
+git clone https://github.com/art2mri/enigma2.git  
+sudo chmod -R 777 enigma2/enigma2.sh
+```   
+You will see the enigma2 interface just like in the picture above.  
 
 ## 2) Prepare Folders 
 
