@@ -55,7 +55,7 @@ pip3 install tkfilebrowser
 ```
 ### Running enigma2  
 
-To run the enigma2 software, just open a terminal **inside of the enigma2 folder** and type:  
+To run the **enigma2** software, just open a terminal **inside of the enigma2 folder** and type:  
 
  ```bash
 source venv/bin/activate  
