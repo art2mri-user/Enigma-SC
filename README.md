@@ -27,8 +27,8 @@ To see how to create the **vertebral_labeling.simg** folder correctly, please re
 To open the **enigma2** interface, open a terminal inside of the **enigma2** folder and type:  
 
 ```bash
-git clone https://github.com/art2mri/enigma2.git  
-sudo chmod -R 777 enigma2/enigma2.sh
+source venv/bin/activate  
+./enigma2.sh
 ```   
 You will see the enigma2 interface just like in the picture above.  
 
