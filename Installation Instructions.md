@@ -4,7 +4,7 @@
 
 - To install **enigma2** it is required at least 25 GB free space in your hard disk.  
 
-- This software has been tested and works pretty well on the Ubuntu 20.04, Ubuntu 20.10, Ubuntu 22.04 and MacOS operating systems.
+- This software has been tested and works pretty well on the Ubuntu 20.04, Ubuntu 20.10 and Ubuntu 22.04.
 
 - The **enigma2** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
