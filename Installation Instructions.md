@@ -81,7 +81,7 @@ source venv/bin/activate
   - ```bash
     sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0
     ```
-    ```bash
+  - ```bash
     sudo chmod -R 777 vertebral_labeling.simg
     ```  
   - After that, a folder named ***vertebral_labeling.simg*** will appear on the **enigma2** folder. PLease don't rename it.  
