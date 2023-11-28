@@ -18,12 +18,16 @@
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-## 2) Updating Packages  
+## 2) Download and Install enigma2  
 
-- Run the following commands on Linux Terminal to install all packages dependencies:
-
-  - `pip install Pillow` or `pip3 install Pillow` or if you already have it installed, just run `pip install --upgrade Pillow`
-  - `sudo apt-get install python3-tk` or `pip3 install tkfilebrowser`
+To download and install enigma2, open a terminal and type:  
+  
+```bash
+git clone https://github.com/art2mri/enigma2.git  
+sudo chmod -R 777 enigma2/enigma2.sh
+```   
+ 
+ It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
 
  
 ## 3) Docker and Singularity Containers  
