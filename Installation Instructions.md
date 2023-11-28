@@ -8,7 +8,7 @@
 
 - The **enigma2** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
-  Python 3.10.12 (or more recent versions) - [Installation](https://www.python.org/downloads/)  
+  Python 3.11.5 - [Installation](https://www.python.org/downloads/)  
   SCT 5.8 (or more recent versions) - [Installation](https://spinalcordtoolbox.com/index.html)  
   Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)  
@@ -18,7 +18,9 @@
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-## 2) Download and Install enigma2  
+## 2) Download and Install enigma2 
+
+### Installing enigma2
 
 To download and install enigma2, open a terminal and type:  
   
@@ -29,6 +31,36 @@ sudo chmod -R 777 enigma2/enigma2.sh
  
  It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
 
+ ### Installing virtual environment to run enigma2 
+
+ Inside of the enigma2 folder, open a terminal and type the following commands:  
+
+ ```bash
+pip install virtualenv
+```
+ ```bash
+sudo apt install python3-venv
+```
+ ```bash
+python3.11 -m venv venv
+```
+ ```bash
+source venv/bin/activate
+```
+ ```bash
+pip install Pillow
+```
+ ```bash
+pip3 install tkfilebrowser
+```
+### Running enigma2  
+
+To run the enigma2 software, just open a terminal **inside of the enigma2 folder** and type:  
+
+ ```bash
+source venv/bin/activate  
+./enigma2.sh
+```
  
 ## 3) Docker and Singularity Containers  
 
