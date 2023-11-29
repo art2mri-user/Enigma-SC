@@ -13,7 +13,7 @@ Isensee, F., Jaeger, P. F., Kohl, S. A. A., Petersen, J., & Maier-Hein, K. H. (2
 
 # Getting started
 
-**Read these before you start:**  
+## Read these before you start:    
 [Installation Instructions](/Installation%20Instructions.md)
 
 !["enigma2 interface"](img/interface.png)
