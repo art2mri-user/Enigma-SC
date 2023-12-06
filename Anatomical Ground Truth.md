@@ -17,7 +17,7 @@ In this section, you will find some examples of anatomical reference to compare 
 
 On the next version of Enigma-SC, will be included the automatic segmentation of lower vertebral levels (from C1 to T2), including T2w images. This version will be released very soon.  
 
-!["enigma2 interface"](img/anatomical1.png)
+!["enigma2 interface"](img/anatomical5.png)
 
 
 
