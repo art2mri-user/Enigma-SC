@@ -26,7 +26,7 @@ Please don't forget to check if you have correctly installed all the requirement
 
 To see how to create the **vertebral_labeling.simg** folder correctly, please read the [Installation Instructions](/Installation%20Instructions.md). It will only be necessary if you want to run the predictions via the [Singularity Platform](https://singularity-userdoc.readthedocs.io/en/latest/).
 
-To open the **Enigma-SC** interface, open a terminal inside of the **Enigma-SC** folder and type:  
+To open the **Enigma-SC** interface, open a terminal inside of the **enigma2** folder and type:  
 
 ```bash
 source venv/bin/activate  
