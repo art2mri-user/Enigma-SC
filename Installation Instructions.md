@@ -2,11 +2,11 @@
 
 ## 1) System Requirements  
 
-- To install **enigma2** it is required at least 25 GB free space in your hard disk.  
+- To install **Enigma-SC** it is required at least 25 GB free space in your hard disk.  
 
 - This software has been tested on Ubuntu 20.04, Ubuntu 20.10 and Ubuntu 22.04.
 
-- The **enigma2** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
+- The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
   Python 3.11.5 - [Installation](https://www.python.org/downloads/)  
   SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
@@ -20,20 +20,20 @@
 
   Once you have installed the CUDA, open a terminal and type `nvidia-smi` to check if it was correctly installed.  
   
-## 2) Download and Install enigma2 
+## 2) Download and Install Enigma-SC 
 
-### Installing enigma2
+### Installing Enigma-SC
 
-To download and install enigma2, open a terminal and type:  
+To download and install Enigma-SC, open a terminal and type:  
   
 ```bash
 git clone https://github.com/art2mri/enigma2.git  
 sudo chmod -R 777 enigma2/enigma2.sh
 ```   
  
- It will clone all the enigma2 repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
+ It will clone all the Enigma-SC repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
 
- ### Installing virtual environment to run enigma2 
+ ### Installing virtual environment to run Enigma-SC 
 
  Inside of the **enigma2** folder, open a terminal and type the following commands:  
 
@@ -55,9 +55,9 @@ pip install Pillow
  ```bash
 pip3 install tkfilebrowser
 ```
-### Running enigma2  
+### Running Enigma-SC  
 
-To run the **enigma2** software and open the interface, just open a terminal **inside of the enigma2 folder** and type:  
+To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the enigma2 folder** and type:  
 
  ```bash
 source venv/bin/activate  
