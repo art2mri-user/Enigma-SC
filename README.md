@@ -32,7 +32,7 @@ To open the **Enigma-SC** interface, open a terminal inside of the **enigma2** f
 source venv/bin/activate  
 ./enigma2.sh
 ```   
-You will see the enigma2 interface just like in the picture above.  
+You will see the Enigma-SC interface just like in the picture above.  
 
 ## 2) Prepare Folders 
 
@@ -46,7 +46,7 @@ By clicking on the **Prepare Folders button** a file dialog box will open, and t
 
 ## 3) Spinal Cord Segmentation 
 
-By clicking on this button, the **enigma2** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step.  
+By clicking on this button, the **Enigma-SC** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step.  
 
 !["step3"](/img/step3.png)
 
