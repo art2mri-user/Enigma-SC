@@ -614,7 +614,7 @@ def open_tutorial():
 #############################	
 
 root = tk.Tk()
-root.title("enigma2")
+root.title("Enigma-SC")
 
 window_width = 520
 window_height = 860
