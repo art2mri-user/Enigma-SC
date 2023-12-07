@@ -1,6 +1,6 @@
 # Anatomical Ground Truth  
 
-In this section, you will find some examples of anatomical reference to compare your results. Please check the images below:   
+In this section, you will find some examples of anatomical references to compare your results. Please check the images below:   
 
 ## Landmarks  
 
