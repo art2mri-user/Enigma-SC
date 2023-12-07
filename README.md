@@ -16,7 +16,7 @@ Isensee, F., Jaeger, P. F., Kohl, S. A. A., Petersen, J., & Maier-Hein, K. H. (2
 ## Read these before you start:    
 [Installation Instructions](/Installation%20Instructions.md)
 
-!["enigma2 interface"](img/i.png)
+!["enigma2 interface"](img/interface.png)
 
 
 ## 1) Running Enigma-SC
