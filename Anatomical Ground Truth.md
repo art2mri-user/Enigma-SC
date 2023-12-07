@@ -1,6 +1,11 @@
 # Anatomical Ground Truth  
 
-In this section, you will find some examples of anatomical reference to compare your results. Please check the images below:    
+In this section, you will find some examples of anatomical reference to compare your results. Please check the images below:   
+
+## Landmarks  
+
+!["correct"](img/correct.png)  
+**Anatomical references of a correct idetification of the vertebral levels (C1, C2 and C3)**  
 
 ## Healthy Control
 
