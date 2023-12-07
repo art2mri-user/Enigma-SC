@@ -4,7 +4,7 @@ In this section, you will find some examples of anatomical reference to compare 
 
 ## Landmarks  
 
-!["correct3"](img/correct3.png)
+!["correct"](img/correct-1.png)  
 **Anatomical references for C1, C2 and C3**  
 
 ## Healthy Control
