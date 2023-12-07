@@ -5,7 +5,7 @@ In this section, you will find some examples of anatomical reference to compare 
 ## Landmarks  
 
 !["correct"](img/correct.png)  
-**Anatomical references of a correct idetification of the vertebral levels (C1, C2 and C3)**  
+**Anatomical references for C1, C2 and C3**  
 
 ## Healthy Control
 
