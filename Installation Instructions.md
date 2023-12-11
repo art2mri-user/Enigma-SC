@@ -27,15 +27,15 @@
 To download and install Enigma-SC, open a terminal and type:  
   
 ```bash
-git clone https://github.com/art2mri/enigma2.git  
-sudo chmod -R 777 enigma2/enigma2.sh
+git clone https://github.com/art2mri/Enigma-SC.git  
+sudo chmod -R 777 Enigma-SC/Enigma-SC.sh
 ```   
  
- It will clone all the Enigma-SC repository files to an enigma2 folder that will be created in your computer. **NOTE: Please don't rename the enigma2 folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
+ It will clone all the Enigma-SC repository files to an Enigma-SC folder that will be created in your computer. **NOTE: Please don't rename the Enigma-SC folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
 
  ### Installing virtual environment to run Enigma-SC 
 
- Inside of the **enigma2** folder, open a terminal and type the following commands:  
+ Inside of the **Enigma-SC** folder, open a terminal and type the following commands:  
 
  ```bash
 pip install virtualenv
@@ -57,11 +57,11 @@ pip3 install tkfilebrowser
 ```
 ### Running Enigma-SC  
 
-To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the enigma2 folder** and type:  
+To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the Enigma-SC folder** and type:  
 
  ```bash
 source venv/bin/activate  
-./enigma2.sh
+./Enigma-SC.sh
 ```
  
 ## 3) Docker and Singularity Containers  
@@ -72,19 +72,19 @@ source venv/bin/activate
   
   If you have already correctly installed the Docker Engine, just run the following command on Linux Terminal:
    - ```bash
-     sudo docker pull art2mri/vertebral_labeling:2.0
+     sudo docker pull art2mri/vertebral_labeling:3.0
      ```
      
   ### Singularity
 
-  If you have correctly installed the Singularity, just open the Linux terminal **inside of the enigma2 folder** and run the following command:
+  If you have correctly installed the Singularity, just open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
   - ```bash
-    sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:2.0
+    sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:3.0
     ```
   - ```bash
     sudo chmod -R 777 vertebral_labeling.simg
     ```  
-  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **enigma2** folder. PLease don't rename it.
+  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **Enigma-SC** folder. PLease don't rename it.
  
 ## 4) Uninstalling Enigma-SC     
  
