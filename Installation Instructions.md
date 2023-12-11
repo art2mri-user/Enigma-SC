@@ -72,14 +72,14 @@ source venv/bin/activate
   
   If you have already correctly installed the Docker Engine, just run the following command on Linux Terminal:
    - ```bash
-     sudo docker pull art2mri/vertebral_labeling:3.0
+     sudo docker pull art2mri/vertebral_labeling:1.0
      ```
      
   ### Singularity
 
   If you have correctly installed the Singularity, just open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
   - ```bash
-    sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:3.0
+    sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0
     ```
   - ```bash
     sudo chmod -R 777 vertebral_labeling.simg
