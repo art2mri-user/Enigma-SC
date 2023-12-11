@@ -188,13 +188,13 @@ def docker():
 	
 	try:
     		subprocess.run('nvidia-smi', check=True)
-    		docker_command = 'sudo docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
+    		docker_command = 'sudo docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:1.0'
 	except FileNotFoundError as gpu_error:
     		print(f"Error checking for GPU: {gpu_error}")
-    		docker_command = 'sudo docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
+    		docker_command = 'sudo docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:1.0'
 	except subprocess.CalledProcessError as gpu_error:
     		print(f"Error checking for GPU: {gpu_error}")
-    		docker_command = 'sudo docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
+    		docker_command = 'sudo docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:1.0'
 
 	try:
     		subprocess.run(docker_command, shell=True, check=True)
