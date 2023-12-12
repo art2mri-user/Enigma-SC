@@ -9,11 +9,11 @@
 - The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
   Python 3.11.5 - [Installation](https://www.python.org/downloads/)  
-  SCT - [Installation](https://spinalcordtoolbox.com/index.html)
+  SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
   
-  Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)
-   **or**
-  Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)  
+  Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
+   **or**  
+  Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)    
 
 - We strongly reccomend the GPU integration for optimizing the prediction time of your results. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
   
