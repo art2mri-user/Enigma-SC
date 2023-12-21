@@ -2,7 +2,7 @@
 
 ## 1) System Requirements  
 
-- To install **Enigma-SC** it is required at least 25 GB free space in your hard disk.  
+- To install **Enigma-SC** at least 25 GB of free space is required in your hard disk.    
 
 - This software has been tested on Ubuntu 20.04, Ubuntu 20.10 and Ubuntu 22.04.
 
@@ -33,7 +33,7 @@ git clone https://github.com/art2mri/Enigma-SC.git
 sudo chmod -R 777 Enigma-SC/Enigma-SC.sh
 ```   
  
- It will clone all the Enigma-SC repository files to an Enigma-SC folder that will be created in your computer. **NOTE: Please don't rename the Enigma-SC folder, you should keep it just like that. You can move the entire folder to any other locations, but never changing its name**.
+ It will clone all the Enigma-SC repository files to an Enigma-SC folder that will be created in your computer. **NOTE: Please don't rename the Enigma-SC folder, because this will cause issues while running the pipeline later. You can move the entire folder to any other locations, but never changing its name**.
 
  ### Installing virtual environment to run Enigma-SC 
 
@@ -68,18 +68,18 @@ source venv/bin/activate
  
 ## 3) Docker and Singularity Containers  
 
-- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling (if you prefer). The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
+- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
 
   ### Docker
   
-  If you have already correctly installed the Docker Engine, just run the following command on Linux Terminal:
+  If you have already correctly installed the Docker Engine, run the following command on Linux Terminal:
    - ```bash
      sudo docker pull art2mri/vertebral_labeling:1.0
      ```
      
-  ### Singularity
+  ### Singularity/Apptainer
 
-  If you have correctly installed the Singularity, just open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
+  If you have correctly installed Singularity/Apptainer, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
   - ```bash
     sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0
     ```
