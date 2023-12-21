@@ -15,7 +15,7 @@
    **or**  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)    
 
-- We strongly reccomend the GPU integration for optimizing the prediction time of your results. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
+- We strongly reccomend the GPU integration for optimizing the prediction time of the pipeline. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
   
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
