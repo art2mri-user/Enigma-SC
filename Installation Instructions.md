@@ -86,7 +86,7 @@ source venv/bin/activate
   - ```bash
     sudo chmod -R 777 vertebral_labeling.simg
     ```  
-  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **Enigma-SC** folder. PLease don't rename it.
+  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **Enigma-SC** folder. Please don't rename it.
  
 ## 4) Uninstalling Enigma-SC     
  
