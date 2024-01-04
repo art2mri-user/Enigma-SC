@@ -10,13 +10,13 @@
   
   Python 3.11.5 - [Installation](https://www.python.org/downloads/)
    
-  SCT - [Installation](https://spinalcordtoolbox.com/index.html)
+  SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
   To easily install the SCT type on terminal:
   ```bash
-  git clone https://github.com/spinalcordtoolbox/spinalcordtoolbox
-  cd spinalcordtoolbox
+  git clone https://github.com/spinalcordtoolbox/spinalcordtoolbox  
   ```
   ```bash
+  cd spinalcordtoolbox
   ./install_sct
   ```
   
