@@ -8,9 +8,9 @@
 
 - The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
-  Python 3.11.5 - [Installation](https://www.python.org/downloads/)
+  **I)** Python 3.11.5 - [Installation](https://www.python.org/downloads/)
    
-  SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
+  **II)** SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
   To easily install the SCT type on terminal:
   ```bash
   git clone https://github.com/spinalcordtoolbox/spinalcordtoolbox  
@@ -20,9 +20,7 @@
   ./install_sct
   ```
   
-   
-  
-  Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
+ **III)** Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
    **or**  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)    
 
