@@ -18,8 +18,7 @@
   ```bash
   cd spinalcordtoolbox
   ./install_sct
-  ```  
-  
+  ```    
  **III)** Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
    **or**  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)    
