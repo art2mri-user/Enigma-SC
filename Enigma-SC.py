@@ -620,7 +620,7 @@ window_height = 860
 root.geometry(f"{window_width}x{window_height}")
 root.configure(bg='gray')
 
-image_path = "files/gj.png"  
+image_path = "files/gustavojarola.png"  
 img = Image.open(image_path)
 
 img = img.resize((250, 250))
