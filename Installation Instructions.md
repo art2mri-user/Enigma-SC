@@ -65,6 +65,9 @@ pip install Pillow
  ```bash
 pip3 install tkfilebrowser
 ```
+ ```bash
+apt-get install python3-tk
+```  
 ### Running Enigma-SC  
 
 To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the Enigma-SC folder** and type:  
