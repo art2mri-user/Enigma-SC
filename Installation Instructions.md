@@ -14,7 +14,7 @@
    **or**  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)  
    **or**  
-  Apptainer - [Installation]([https://github.com/apptainer/singularity/blob/master/INSTALL.md](https://apptainer.org/docs/user/latest/quick_start.html#quick-installation)  
+  Apptainer - [Installation](https://apptainer.org/docs/user/latest/quick_start.html#quick-installation)  
 
 - We strongly reccomend the GPU integration for optimizing the prediction time of the pipeline. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
   
