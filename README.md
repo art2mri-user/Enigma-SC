@@ -58,7 +58,13 @@ After the user selected the output folder, a file dialog box will appear, and yo
 
 After the user's selection, the folders will start to be prepared, and a final report will be generated in the terminal indicating whether the process occurred correctly.  
 
-!["fig6-1"](/img/fig6-1.png)
+!["fig6-1"](/img/fig6-1.png) 
+
+Now your output folder will be your PREPARED FOLDER, and it will be organized according to the image below.  
+
+!["fig7-1"](/img/fig6-1.png) 
+
+The next steps can now be executed.  
 
 ## 3) Spinal Cord Segmentation 
 
