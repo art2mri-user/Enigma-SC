@@ -48,7 +48,9 @@ The **Prepare Folders** button takes all the files inside of the **input** folde
 
 !["fig3"](/img/fig3.png)
 
-By clicking on the **Prepare Folders button** a file dialog box will open, and then you can choose between .nii.gz ou BIDS format files inside of the **input** folder. After that, you are ready to segment them.  
+By clicking on the **Prepare Folders button** the user will be asked to choose between .nii.gz ou BIDS format files inside of the **input** folder. After your choice, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset.  
+
+!["fig4"](/img/fig4.png)  
 
 !["step2"](/img/step-2.png)
 
