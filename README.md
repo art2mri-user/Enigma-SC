@@ -43,7 +43,7 @@ The first thing the user should do is to create an output folder. This folder ca
 The **Prepare Folders** button takes all the files inside of the **input** folder, and divides them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder. This command accepts two different input data formats: single **.nii.gz** files or a **BIDS** dataset. Please refer to the image below how these data are organized.
 
 <p>
-  <img src="/img/fig2.png" style="margin-right: 20px;/>
+  <img src="/img/fig2.png" style="margin-right: 50px;/>
 </p> 
 
 <p align="center">
