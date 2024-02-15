@@ -78,7 +78,7 @@ After clicking on the **Spinal Cord Segmentation** button, select the container 
 
 Once the process is finished, a report will be generated in the terminal informing whether it was successful for each selected file. This report will also be saved in a .txt file within the **PREPARED FOLDER**.  
 
-!["fig9-11"](/img/fig9-1.png)
+!["fig9-11"](/img/fig9-11.png)
 
 ## 4) Spinal Cord Vertebral Labeling (Automated/Manual)  
 
