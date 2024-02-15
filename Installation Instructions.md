@@ -2,34 +2,25 @@
 
 ## 1) System Requirements  
 
-- To install **Enigma-SC** at least 25 GB of free space is required in your hard disk.    
+- To install **Enigma-SC** at least 40 GB of free space is required in your hard disk.    
 
 - This software has been tested on Ubuntu 20.04, Ubuntu 20.10 and Ubuntu 22.04.
 
 - The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
   
   **I)** Python 3.11.5 - [Installation](https://www.python.org/downloads/)
-   
-  **II)** SCT - [Installation](https://spinalcordtoolbox.com/index.html)  
-  To easily install the SCT type on terminal:
-  ```bash
-  git clone https://github.com/spinalcordtoolbox/spinalcordtoolbox  
-  ```
-  ```bash
-  cd spinalcordtoolbox
-  ./install_sct
-  ```    
-  **III)** Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
+    
+  **II)** Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
    **or**  
-  Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)    
+  Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)  
+   **or**  
+  Apptainer - [Installation]([https://github.com/apptainer/singularity/blob/master/INSTALL.md](https://apptainer.org/docs/user/latest/quick_start.html#quick-installation)  
 
 - We strongly reccomend the GPU integration for optimizing the prediction time of the pipeline. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
   
   CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
   CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-  Once you have installed the CUDA, open a terminal and type `nvidia-smi` to check if it was correctly installed.  
-  
 ## 2) Download and Install Enigma-SC 
 
 ### Installing Enigma-SC
@@ -38,7 +29,7 @@ To download and install Enigma-SC, open a terminal and type:
   
 ```bash
 git clone https://github.com/art2mri/Enigma-SC.git  
-sudo chmod -R 777 Enigma-SC/Enigma-SC.sh
+chmod -R 777 Enigma-SC/Enigma-SC.sh
 ```   
  
  It will clone all the Enigma-SC repository files to an Enigma-SC folder that will be created in your computer. **NOTE: Please don't rename the Enigma-SC folder, because this will cause issues while running the pipeline later. You can move the entire folder to any other locations, but never changing its name**.
@@ -51,7 +42,7 @@ sudo chmod -R 777 Enigma-SC/Enigma-SC.sh
 pip install virtualenv
 ```
  ```bash
-sudo apt install python3-venv
+apt install python3-venv
 ```
  ```bash
 python3.11 -m venv venv
@@ -67,16 +58,8 @@ pip3 install tkfilebrowser
 ```
  ```bash
 apt-get install python3-tk
-```  
-### Running Enigma-SC  
+```    
 
-To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the Enigma-SC folder** and type:  
-
- ```bash
-source venv/bin/activate  
-./Enigma-SC.sh
-```
- 
 ## 3) Docker and Singularity Containers  
 
 - You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
@@ -85,21 +68,41 @@ source venv/bin/activate
   
   If you have already correctly installed the Docker Engine, run the following command on Linux Terminal:
    - ```bash
-     sudo docker pull art2mri/vertebral_labeling:1.0
+     docker pull art2mri/vertebral_labeling:4.0
      ```
      
-  ### Singularity/Apptainer
+  ### Singularity
 
-  If you have correctly installed Singularity/Apptainer, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
+  If you have correctly installed Singularity, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
   - ```bash
-    sudo singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:1.0
+    singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:4.0
     ```
   - ```bash
-    sudo chmod -R 777 vertebral_labeling.simg
+    chmod -R 777 vertebral_labeling.simg
+    ```
+
+  ### Apptainer
+
+  If you have correctly installed Apptainer, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
+  - ```bash
+    singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:4.0
+    ```
+  - ```bash
+    chmod -R 777 vertebral_labeling.simg
     ```  
-  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **Enigma-SC** folder. Please don't rename it.
+  - After that, a folder named ***vertebral_labeling.simg*** will appear on the **Enigma-SC** folder. Please don't rename it.  
+  
+
+## 4) Running Enigma-SC  
+
+To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the Enigma-SC folder** and type:  
+
+ ```bash
+source venv/bin/activate  
+./Enigma-SC.sh
+```  
  
-## 4) Uninstalling Enigma-SC     
+## 5) Uninstalling Enigma-SC     
  
 
 
