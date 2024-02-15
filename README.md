@@ -98,7 +98,7 @@ If you choose to run the **Manual** method, for each incorrect segmentation gene
 
 Once the labeling process is finished, it is important to check visually if the results correspond to the anatomical landmarks. You can check an anatomical reference image to compare your results in the section [Anatomical Ground Truth](/Anatomical%20Ground%20Truth.md). The image below shows how to access the labeled file generated previously.  
 
-!["fig11"](/img/fig11.png)  
+!["fig12"](/img/fig12.png)  
 
 ## 5) Spinal Cord Registration  
 
