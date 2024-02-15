@@ -44,7 +44,8 @@ The **Prepare Folders** button takes all the files inside of the **input** folde
 
 <p align="center">
   <img src="/img/fig2.png" />
-</p>   
+</p> 
+
 !["fig3"](/img/fig3.png)
 
 By clicking on the **Prepare Folders button** a file dialog box will open, and then you can choose all the .nii.gz files inside of the **input** folder. After that, you are ready to segment them.  
