@@ -76,7 +76,7 @@ After clicking on the **Spinal Cord Segmentation** button, select the container 
 
 !["fig8"](/img/fig8.png)
 
-!["fig9"](/img/fig9.png)
+!["fig9-1"](/img/fig9-1.png)
 
 ## 4) Spinal Cord Vertebral Labeling (Automated/Manual)  
 
