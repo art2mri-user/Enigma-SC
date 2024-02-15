@@ -54,7 +54,11 @@ By clicking on the **Prepare Folders button** the user will be asked to choose b
 
 After the user selected the output folder, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset. 
 
-!["fig5-1"](/img/fig5-1.png)
+!["fig5-1"](/img/fig5-1.png)  
+
+After the user's selection, the folders will start to be prepared, and a final report will be generated in the terminal indicating whether the process occurred correctly.  
+
+!["fig6-1"](/img/fig6-1.png)
 
 ## 3) Spinal Cord Segmentation 
 
