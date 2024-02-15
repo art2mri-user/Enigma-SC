@@ -62,7 +62,7 @@ After the user's selection, the folders will start to be prepared, and a final r
 
 !["fig6-11"](/img/fig6-11.png) 
 
-Now your output folder will be your PREPARED FOLDER, and it will be organized according to the image below.  
+Now the output folder will be your PREPARED FOLDER, and it will be organized according to the image below.  
 
 !["fig7-11"](/img/fig7-11.png) 
 
