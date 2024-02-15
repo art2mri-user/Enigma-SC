@@ -38,7 +38,7 @@ You will see the Enigma-SC interface as shown in the picture above.
 
 The first thing the user should do is to create an output folder. This folder can have any name and be located in any directory. All outputs generated during the processing will be placed inside this folder automatically. 
 
-
+!["fig1"](/img/fig1.png)
 
 The **Prepare Folders** button takes all the files inside of the **input** folder, and divides them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder.  
 
