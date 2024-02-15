@@ -102,15 +102,15 @@ Once the labeling process is finished, it is important to check visually if the 
 
 ## 5) Spinal Cord Registration  
 
-For all the images on which you ran the **Automated** method in the previous step, you should run the **Spinal Cord Registration** button located just below the **Automated** button. A file dialog box will appear, and you need to select all corresponding individuals in the **spine** folder. Similarly, for all the images you processed using the **Manual** button, you should run the **Spinal Cord Registration** button located just below the **Manual** button and select all corresponding individuals in the **spine** folder.  
+For all the images on which you ran the **Automated** method in the previous step, you should run the **Spinal Cord Registration** button located just below the **Automated** button. A file dialog box will appear, and you can follow the same approach from the previous steps to select all corresponding individuals in the **PREPARED** folder. Similarly, for all the images you processed using the **Manual** button, you should run the **Spinal Cord Registration** button located just below the **Manual** button and select all corresponding individuals in the **PREPARED FOLDER**.  
 
 In this step, the [Registration to template](https://spinalcordtoolbox.com/user_section/tutorials/registration-to-template.html) method will be automatically performed for each individual according to the Spinal Cord Toolbox method.  
 
 ## 6) Data Extraction  
 
-The main outcome measures of this pipeline are numerical values for Cross-Sectional Area (CSA) and eccentricity, for each participant. The **Data Extraction** button prompts the user to select individuals within the **spine** folder for whom they wish to automatically calculate the Cross Sectional Area and Eccentricity values. Additionally, other morphometric measurements will be computed based on the `sct_process_segmentation` command from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/getting-started.html) tutorial.  
+The main outcome measures of this pipeline are numerical values for Cross-Sectional Area (CSA) and eccentricity, for each participant. The **Data Extraction** button prompts the user to select individuals within the **PREPARED FOLDER** for whom they wish to automatically calculate the Cross Sectional Area and Eccentricity values. Additionally, other morphometric measurements will be computed based on the `sct_process_segmentation` command from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/getting-started.html) tutorial.  
 
-Furthermore, two .csv spreadsheets will be generated within the **spine** folder. The first one will be named 'csa_final_table_(mm+dd+yyyy)(hh+mm+ss),' where the information within parentheses corresponds to the date and time of execution, formatted as (month-day-year)(hour-minutes-seconds). The following spreadsheet will be named 'eccentricity_table_(mm+dd+yyyy)_(hh+mm+ss),' following the same format as the previous table. 
+Furthermore, two .csv spreadsheets will be generated within the **PREPARED FOLDER**. The first one will be named 'csa_final_table_(mm+dd+yyyy)(hh+mm+ss),' where the information within parentheses corresponds to the date and time of execution, formatted as (month-day-year)(hour-minutes-seconds). The following spreadsheet will be named 'eccentricity_table_(mm+dd+yyyy)_(hh+mm+ss),' following the same format as the previous table. 
 
 !["step9"](/img/step-9.png)
 
@@ -122,7 +122,7 @@ $$
 
 ## 7) Pack and Send   
 
-And finally, the **Pack and Send** button will require the user to select all individuals folders within the **spine** folder whom they wish to compress into a single .zip file. This will include the output generated throughout the previous steps. The compressed files for each individual will be placed within the **spine** folder (excluding the raw .nii.gz image), and they will be ready to be sent!  
+And finally, the **Pack and Send** button will require the user to (following the same approach as before, of choosing platforms and files) select all individuals folders within the **PREPARED FOLDER** whom they wish to compress into a single .zip file. This will include the output generated throughout the previous steps. The compressed files for each individual will be placed within the **PREPARED FOLDER** (excluding the raw .nii.gz image), and they will be ready to be sent!  
 
 !["step10"](/img/step-10.png)
 
