@@ -42,7 +42,9 @@ The first thing the user should do is to create an output folder. This folder ca
 
 The **Prepare Folders** button takes all the files inside of the **input** folder, and divides them into differents subfolders into the **spine** folder which is created automatically outside of the **input** folder. This command accepts two different input data formats: single **.nii.gz** files or a **BIDS** dataset. Please refer to the image below.
 
-!["fig2"](/img/fig2.png)  
+<p align="center">
+  <img src="/img/fig2.png" />
+</p>   
 !["fig3"](/img/fig3.png)
 
 By clicking on the **Prepare Folders button** a file dialog box will open, and then you can choose all the .nii.gz files inside of the **input** folder. After that, you are ready to segment them.  
