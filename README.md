@@ -46,7 +46,9 @@ The **Prepare Folders** button takes all the files inside of the **input** folde
   <img src="/img/fig2.png" />
 </p> 
 
-!["fig3"](/img/fig3.png)
+<p align="center">
+  <img src="/img/fig3.png" />
+</p> 
 
 By clicking on the **Prepare Folders button** the user will be asked to choose between .nii.gz ou BIDS format files inside of the **input** folder. After your choice, regardless of the format selected by the user, a message will appear in the terminal along with a file dialog box asking you to select your previously created output folder.  
 
