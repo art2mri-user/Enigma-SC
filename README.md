@@ -48,11 +48,13 @@ The **Prepare Folders** button takes all the files inside of the **input** folde
 
 !["fig3"](/img/fig3.png)
 
-By clicking on the **Prepare Folders button** the user will be asked to choose between .nii.gz ou BIDS format files inside of the **input** folder. After your choice, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset.  
+By clicking on the **Prepare Folders button** the user will be asked to choose between .nii.gz ou BIDS format files inside of the **input** folder. After your choice, regardless of the format selected by the user, a message will appear in the terminal along with a file dialog box asking you to select your previously created output folder.  
 
 !["fig4"](/img/fig4.png)  
 
-!["step2"](/img/step-2.png)
+After the user selected the output folder, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset. 
+
+!["fig5"](/img/fig5.png)
 
 ## 3) Spinal Cord Segmentation 
 
