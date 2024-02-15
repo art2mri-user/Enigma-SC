@@ -58,7 +58,10 @@ pip3 install tkfilebrowser
 ```
  ```bash
 apt-get install python3-tk
-```    
+```
+ ```bash
+deactivate
+```
 
 ## 3) Docker and Singularity Containers  
 
