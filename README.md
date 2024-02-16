@@ -114,7 +114,7 @@ Furthermore, two .csv spreadsheets will be generated within the **PREPARED FOLDE
 
 !["step9"](/img/step-9.png)
 
-In both spreadsheets, you will find the names of all the individuals you selected in the 'subject' column, followed by their respective CSA and Eccentricity values (each in their own spreadsheet). In the 'csa_final_table_' spreadsheet, you will find the CSA values corresponding to each vertebral level (C1, C2, and C3), already corrected for orthogonalization with respect to the anterior-posterior (AP) and right-left (RL) angles, considering the average as: 
+In both spreadsheets, you will find the names of all the individuals you selected in the 'subject' column, followed by their respective CSA and Eccentricity values (each in their own spreadsheet). In the 'csa_final_table_' spreadsheet, you will find the CSA values corresponding to each vertebral level (C1, C2, and C3), already corrected for orthogonalization with respect to the anterior-posterior (AP) and right-left (RL) angles, to correct the neck curvature, considering the average as: 
 
 $$
 CSA = \frac{{\text{{Mean (area)}} \cdot \cos(\theta_{\text{{AP}}}) + \text{{Mean (area)}} \cdot \cos(\theta_{\text{{RL}}})}}{2}
