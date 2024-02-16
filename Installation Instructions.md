@@ -65,7 +65,7 @@ deactivate
 
 ## 3) Docker and Singularity Containers  
 
-- You don't necessarily need to install both of these applications; you can choose to install just one of them to run the spinal cord vertebral labeling. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
+- You don't necessarily need to install both of these applications; you can choose to install one of them to run the spinal cord vertebral labeling. The containers will be automatically initialized from an existing Docker image that is already available on [DockerHub](https://hub.docker.com/repository/docker/art2mri/vertebral_labeling/general).
 
   ### Docker
   
@@ -98,7 +98,7 @@ deactivate
 
 ## 4) Running Enigma-SC  
 
-To run the **Enigma-SC** software and open the interface, just open a terminal **inside of the Enigma-SC folder** and type:  
+To run the **Enigma-SC** software and open the interface, open a terminal **inside of the Enigma-SC folder** and type:  
 
  ```bash
 source venv/bin/activate  
