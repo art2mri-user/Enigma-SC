@@ -6,14 +6,14 @@
 
 - This software has been tested on Ubuntu 20.04, Ubuntu 20.10 and Ubuntu 22.04.
 
-- The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install the following applications:
+- The **Enigma-SC** fundamentally runs its application on top of other tools, so it's necessary for the user to install of the following applications:
   
   **I)** Python 3.11.5 - [Installation](https://www.python.org/downloads/)
-    
+  
   **II)** Docker Engine - [Installation](https://docs.docker.com/engine/install/ubuntu/)  
-   **or**  
+   **OR**  
   Singularity - [Installation](https://github.com/apptainer/singularity/blob/master/INSTALL.md)  
-   **or**  
+   **OR**  
   Apptainer - [Installation](https://apptainer.org/docs/user/latest/quick_start.html#quick-installation)  
 
 - We strongly reccomend the GPU integration for optimizing the prediction time of the pipeline. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
