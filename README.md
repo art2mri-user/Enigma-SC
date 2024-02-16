@@ -120,6 +120,8 @@ $$
 CSA = \frac{{\text{{Mean (area)}} \cdot \cos(\theta_{\text{{AP}}}) + \text{{Mean (area)}} \cdot \cos(\theta_{\text{{RL}}})}}{2}
 $$  
 
+!["fig-13"](/img/fig-13.png)  
+
 ## 7) Pack and Send   
 
 And finally, the **Pack and Send** button will require the user to (following the same approach as before, of choosing platforms and files) select all individuals folders within the **PREPARED FOLDER** whom they wish to compress into a single .zip file. This will include the output generated throughout the previous steps. The compressed files for each individual will be placed within the **PREPARED FOLDER** (excluding the raw .nii.gz image), and they will be ready to be sent!  
