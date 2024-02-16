@@ -120,7 +120,9 @@ $$
 CSA = \frac{{\text{{Mean (area)}} \cdot \cos(\theta_{\text{{AP}}}) + \text{{Mean (area)}} \cdot \cos(\theta_{\text{{RL}}})}}{2}
 $$  
 
-!["fig13-1"](/img/fig13-1.png)  
+<p align="center">
+  <img src="/img/fig13-1.png" />
+</p>  
 
 ## 7) Pack and Send   
 
