@@ -88,7 +88,7 @@ deactivate
 
   If you have correctly installed Apptainer, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
   - ```bash
-    singularity build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:4.0
+    apptainer build --sandbox vertebral_labeling.simg docker://art2mri/vertebral_labeling:4.0
     ```
   - ```bash
     chmod -R 777 vertebral_labeling.simg
