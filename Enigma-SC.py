@@ -2097,9 +2097,9 @@ def ext_singularity():
 		b1 = []
 		update_progress_bar(idx + 1, len(file_paths))
 		try:
-			os.system ('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)))
+			subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)
 		except subprocess.CalledProcessError as e:
-			os.system('cd '+before+'/'+os.path.basename(str(i))+' && '+'sudo cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)))	
+			subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'sudo cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)	
 		try:		
 			subprocess.run('sudo singularity exec --writable vertebral_labeling.simg/ python3 /spine4.py', shell=True, check=True)
 		except subprocess.CalledProcessError:
