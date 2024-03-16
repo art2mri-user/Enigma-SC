@@ -289,8 +289,8 @@ def modal_docker():
 		if 'vertebral_labeling' in result:
 			os.system('docker rm vertebral_labeling')
 						
-	loww1='docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
-	loww2='sudo -S docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+	loww1='docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+	loww2='sudo -S docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
 	
 	try:
 		subprocess.run(loww1, shell=True, check=True, stderr=subprocess.DEVNULL)
