@@ -23,4 +23,8 @@ After that, the folders will be prepared and once it is finished you will see a 
 
 <p align="center">
   <img src="/img/command3.png" />
-</p> 
+</p>  
+
+### 2. Spinal Cord Segmentation  
+
+
