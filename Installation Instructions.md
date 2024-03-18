@@ -63,7 +63,7 @@ apt-get install python3-tk
 deactivate
 ```
 
-**If you couldn't install the packages above due to permission problems, you can run the pipeline via command line, please check the section 4) Running Enigma-SC**
+**If you couldn't install the packages above due to permission problems, you can run the pipeline via command line, please check the section 4) Running Enigma-SC** and no packages need to be installed.
 
 ## 3) Docker and Singularity Containers  
 
