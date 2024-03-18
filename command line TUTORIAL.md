@@ -37,4 +37,6 @@ The user can choose between **Docker** and **Singularity/Apptainer** container p
 
 Once the process is finished, a report will be generated in the terminal informing whether it was successful for each selected file. This report will also be saved in a .txt file within the **PREPARED FOLDER**.  
 
+### 3. Spinal Cord Segmentation  
+
 
