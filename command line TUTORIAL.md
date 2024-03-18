@@ -18,3 +18,5 @@ After type 1 on the terminal, the user will be asked to choose the input files o
 <p align="center">
   <img src="/img/command2.png" />
 </p> 
+
+After that, the folders will be prepared and once it is finished you will see a report of the selected files. The output folder will be now your **PREPARED FOLDER**.  
