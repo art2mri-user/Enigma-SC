@@ -63,7 +63,9 @@ apt-get install python3-tk
 deactivate
 ```
 
-**If you couldn't install the packages above due to permission problems, you can run the pipeline via command line, please check the section 4) Running Enigma-SC** and no packages need to be installed.
+**If you couldn't install the packages above due to permission problems, you can run the pipeline via command line, please check the section 4) Running Enigma-SC** and no packages need to be installed.  
+
+[command line tutorial](/command%20line%20TUTORIAL.md)  
 
 ## 3) Docker and Singularity Containers  
 
@@ -112,6 +114,7 @@ If you are running **Enigma-SC** in a server, or if you couldn`t install all the
 source venv/bin/activate  
 ./nographmode.sh
 ```
+[command line tutorial](/command%20line%20TUTORIAL.md)  
  
 ## 5) Uninstalling Enigma-SC     
  
