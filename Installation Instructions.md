@@ -34,7 +34,7 @@ chmod -R 777 Enigma-SC/Enigma-SC.sh
  
  It will clone all the Enigma-SC repository files to an Enigma-SC folder that will be created in your computer. **NOTE: Please don't rename the Enigma-SC folder, because this will cause issues while running the pipeline later. You can move the entire folder to any other locations, but never changing its name**.
 
- ### Installing virtual environment to run Enigma-SC 
+ ### Installing virtual environment to run Enigma-SC GUI 
 
  Inside of the **Enigma-SC** folder, open a terminal and type the following commands:  
 
@@ -62,6 +62,8 @@ apt-get install python3-tk
  ```bash
 deactivate
 ```
+
+**If you couldn't install the packages above due to permission problems, you can run the pipeline via command line, please check the section 4) Running Enigma-SC**
 
 ## 3) Docker and Singularity Containers  
 
