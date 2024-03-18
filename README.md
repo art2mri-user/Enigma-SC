@@ -40,6 +40,7 @@ If you are running **Enigma-SC** in a server, or if you couldn`t install all the
 source venv/bin/activate  
 ./nographmode.sh
 ```
+Click here to check the [command line tutorial](/command%20line%20TUTORIAL.md)
 
 ## 2) Prepare Folders 
 
