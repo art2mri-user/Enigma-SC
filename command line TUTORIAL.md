@@ -65,5 +65,24 @@ The main outcome measures of this pipeline are numerical values for Cross-Sectio
 
 Furthermore, two .csv spreadsheets will be generated within the **PREPARED FOLDER**. The first one will be named 'csa_final_table_(mm+dd+yyyy)(hh+mm+ss),' where the information within parentheses corresponds to the date and time of execution, formatted as (month-day-year)(hour-minutes-seconds). The following spreadsheet will be named 'eccentricity_table_(mm+dd+yyyy)_(hh+mm+ss),' following the same format as the previous table. 
 
+!["step9"](/img/step-9.png)  
+
+In both spreadsheets, you will find the names of all the individuals you selected in the 'subject' column, followed by their respective CSA and Eccentricity values (each in their own spreadsheet). In the 'csa_final_table_' spreadsheet, you will find the CSA values corresponding to each vertebral level (C1, C2, and C3), already corrected for orthogonalization with respect to the anterior-posterior (AP) and right-left (RL) angles, to correct the neck curvature, considering the average as: 
+
+$$
+CSA = \frac{{\text{{Mean (area)}} \cdot \cos(\theta_{\text{{AP}}}) + \text{{Mean (area)}} \cdot \cos(\theta_{\text{{RL}}})}}{2}
+$$  
+
+<p align="center">
+  <img src="/img/fig13-1.png" />
+</p>  
+
+### 7. Pack and Send   
+
+And finally, the **Pack and Send** button will require the user to (following the same approach as before, of choosing platforms and folders). It takes all the individuals folders within the **PREPARED FOLDER** and compress them into singles .zip file. This will include the output generated throughout the previous steps. The compressed files for each individual will be placed within the **PREPARED FOLDER** (excluding the raw .nii.gz image), and they will be ready to be sent!  
+
+!["step10"](/img/step-10.png)
+
+
 
 
