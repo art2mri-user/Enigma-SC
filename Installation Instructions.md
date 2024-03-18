@@ -110,10 +110,9 @@ source venv/bin/activate
 ```
 If you are running **Enigma-SC** in a server, or if you couldn`t install all the packages listed on the section **2) Download and Install Enigma-SC**, you can run the pipeline without opening the GUI, via command line, by opening a terminal **inside of the Enigma-SC folder** and typing:  
 
- ```bash
-source venv/bin/activate  
+ ```bash 
 ./nographmode.sh
-```
+```  
 [command line tutorial](/command%20line%20TUTORIAL.md)  
  
 ## 5) Uninstalling Enigma-SC     
