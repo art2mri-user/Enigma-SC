@@ -27,4 +27,6 @@ After that, the folders will be prepared and once it is finished you will see a 
 
 ### 2. Spinal Cord Segmentation  
 
+By clicking on this button, the **Enigma-SC** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step. 
+
 
