@@ -29,4 +29,6 @@ After that, the folders will be prepared and once it is finished you will see a 
 
 By clicking on this button, the **Enigma-SC** will run automatically the `sct_deepseg` function from the [Spinal Cord Toolbox](https://spinalcordtoolbox.com/user_section/command-line.html) over each image you selected from the previous step. 
 
+The user can choose between **Docker** and **Singularity/Apptainer** container platforms. After that, the path of the **PREPARED FOLDER** will be asked, give the entire path. If **Singularity/Apptainer** was the choice, before the prepared folder, the path of the **Enigma-SC** will be asked, give the entire path, for example: **/home/art2mri/Documents/Enigma-SC** 
+
 
