@@ -62,7 +62,7 @@ By clicking on the **Prepare Folders button** the user will be asked to choose b
 
 !["fig4"](/img/fig4-1.png)  
 
-After the user selected the output folder, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset. 
+After the user selected the output folder, a file dialog box will appear, and you will be able to select your .nii.gz files within your input folder (this folder can have any name) or your BIDS dataset (the anatomical files name must end with T1w.nii.gz). 
 
 !["fig5-11"](/img/fig5-11.png)  
 
