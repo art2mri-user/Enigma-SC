@@ -106,7 +106,7 @@ To run the **Enigma-SC** software and open the interface, open a terminal **insi
 source venv/bin/activate  
 ./Enigma-SC.sh
 ```
-If you are running **Enigma-SC** in a server, or if you couldn`t install all the packages listed on the section **2) Download and Install Enigma-SC**, you can run the pipeline without opening the GUI, via command line, opening a terminal **inside of the Enigma-SC folder** and typing:  
+If you are running **Enigma-SC** in a server, or if you couldn`t install all the packages listed on the section **2) Download and Install Enigma-SC**, you can run the pipeline without opening the GUI, via command line, by opening a terminal **inside of the Enigma-SC folder** and typing:  
 
  ```bash
 source venv/bin/activate  
