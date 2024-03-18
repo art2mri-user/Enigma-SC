@@ -32,7 +32,14 @@ To open the **Enigma-SC** interface, open a terminal inside of the **Enigma-SC**
 source venv/bin/activate  
 ./Enigma-SC.sh
 ```   
-You will see the Enigma-SC interface as shown in the picture above.  
+You will see the Enigma-SC interface as shown in the picture above. 
+
+If you are running **Enigma-SC** in a server, or if you couldn`t install all the needed packages to open the GUI, you can run the pipeline via command line, opening a terminal **inside of the Enigma-SC folder** and typing:  
+
+ ```bash
+source venv/bin/activate  
+./nographmode.sh
+```
 
 ## 2) Prepare Folders 
 
