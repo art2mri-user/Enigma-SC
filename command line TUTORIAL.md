@@ -15,4 +15,6 @@ Before typing this option, the user should create an **output** folder (you can 
 
 After type 1 on the terminal, the user will be asked to choose the input files option (.nii.gz or BIDS). After the choice, the path of the **output** folder will be asked, and the entire path must be given, for example: **/home/art2mri/Documents/output** If you don't know how to find the path, open a terminal inside of the output folder and type **pwd** After that, the input folder path will be asked, type the entire path, for example: **/home/art2mri/Documents/input** 
 
-!["1preparefolders](img/command2.png) 
+<p align="center">
+  <img src="/img/command2.png" />
+</p> 
