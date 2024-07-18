@@ -17,9 +17,6 @@
   Apptainer - [Installation](https://apptainer.org/docs/user/latest/quick_start.html#quick-installation)  
 
 - We strongly reccomend the GPU integration for optimizing the prediction time of the pipeline. However, inference times are typically still manageable on CPU and MPS (Apple M1/M2). If using a GPU, it should have at least 4 GB of available (unused) VRAM.    
-  
-  CUDA-toolkit - [Installation](https://developer.nvidia.com/cuda-toolkit-archive)  
-  CUDA container-toolkit - [Installation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ## 2) Download and Install Enigma-SC 
 
