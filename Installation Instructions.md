@@ -74,16 +74,16 @@ deactivate
    - ```bash
      docker pull art2mri/vertebral_labeling:3.0
      ```
-  Adding a user to the docker group grants significant permissions, equivalent to root access, because the Docker daemon (dockerd) runs as root. Ensure you trust the users you are adding to   the docker group.
+  Adding a user to the docker group grants significant permissions, equivalent to root access, because the Docker daemon (dockerd) runs as root. Ensure you trust the users you are adding to   
+  the docker group:
   
-By following these steps, the user will be able to use Docker without the need to prefix commands with sudo:  
    - ```bash
      sudo groupadd docker
      ```
      
-    - ```bash
-     sudo usermod -aG docker ${USER}
-     ```      
+   - ```bash
+     sudo groupadd docker
+     ```     
   ### Singularity
 
   If you have correctly installed Singularity, open the Linux terminal **inside of the Enigma-SC folder** and run the following command:
