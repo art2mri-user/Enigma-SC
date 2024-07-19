@@ -596,9 +596,23 @@ def docker():
 			os.system(command515)
 			command575='docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			command676='sudo docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
-			os.system(command575)		
-			os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
-			os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))	
+			os.system(command575)
+					
+			os.system('docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/'+str(i)+'.nii.gz')
+			os.system('docker cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz vertebral_labeling:/'+str(i)+'_seg_labeled.nii.gz')
+			os.system('docker exec -it vertebral_labeling chmod -R 777 /'+str(i)+'.nii.gz')
+			os.system('docker exec -it vertebral_labeling chmod -R 777 /'+str(i)+'_seg_labeled.nii.gz')
+			os.system('docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling sct_qc -i /'+str(i)+'.nii.gz -s /'+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
+			os.system('docker exec -it vertebral_labeling chmod -R 777 qc')
+			os.system('docker cp vertebral_labeling:/qc'+' '+before+'/'+str(i)+'/'+'qc_labeled_'+str(i))
+			os.system('docker exec -it vertebral_labeling rm -rf qc')
+			os.system('docker exec -it vertebral_labeling rm -f /*.nii.gz')
+						
+			#os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
+			#os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
+			
+			
+				
 	command63='docker stop vertebral_labeling'
 	command64='docker stop vertebral_labeling'
 	exit19 = subprocess.run(command63, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
@@ -768,10 +782,27 @@ def singularity():
 			os.system(command75)
 			os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz')
 			os.system('rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz')
+			
+			
+			
 			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder)			
 			os.system('mv '+enigma_folder+'/'+str(i)+'_seg_labeled.nii.gz '+before+'/'+str(i))
-			os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
-			os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
+			
+			#os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
+			os.system('cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/'+str(i)+'.nii.gz')
+			os.system('cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder+'/vertebral_labeling.simg/'+str(i)+'_seg_labeled.nii.gz')
+			os.system('chmod -R 777 vertebral_labeling.simg/'+str(i)+'.nii.gz')
+			os.system('chmod -R 777 vertebral_labeling.simg/'+str(i)+'_seg_labeled.nii.gz')
+			command_1 = 'singularity exec -e --env SCT_DIR=/spinalcordtoolbox --env PATH=/spinalcordtoolbox/bin:$PATH --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ sct_qc -i /'+str(i)+'.nii.gz -s /'+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae'
+			command_2 = 'apptainer exec -e --env SCT_DIR=/spinalcordtoolbox --env PATH=/spinalcordtoolbox/bin:$PATH --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ sct_qc -i /'+str(i)+'.nii.gz -s /'+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae'
+			try:
+				subprocess.run(command_1, shell=True, check=True)
+			except subprocess.CalledProcessError:
+				subprocess.run(command_2, shell=True, check=True)
+			
+			os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/'+os.getenv('USER')+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
+			os.system('rm '+enigma_folder+'/vertebral_labeling.simg/*nii.gz')
+			#os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')

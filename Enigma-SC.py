@@ -662,9 +662,26 @@ def docker():
 		os.system(command515)
 		command575='docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+os.path.basename(str(i))+'_0000.nii.gz'
 		command676='sudo docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+os.path.basename(str(i))+'_0000.nii.gz'
-		os.system(command575)		
-		os.system('cd '+str(i)+' && sct_qc -i '+os.path.basename(str(i))+'.nii.gz -s '+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
-		os.system('mv -v '+str(i)+'/qc '+str(i)+'/qc_labeled_'+os.path.basename(str(i)))	
+		os.system(command575)
+		
+					
+		os.system('docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/'+os.path.basename(str(i))+'.nii.gz')
+		os.system('docker cp '+str(i)+'/'+os.path.basename(str(i))+'_seg_labeled.nii.gz vertebral_labeling:/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
+		os.system('docker exec -it vertebral_labeling chmod -R 777 /'+os.path.basename(str(i))+'.nii.gz')
+		os.system('docker exec -it vertebral_labeling chmod -R 777 /'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
+		os.system('docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling sct_qc -i /'+os.path.basename(str(i))+'.nii.gz -s /'+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
+		os.system('docker exec -it vertebral_labeling chmod -R 777 qc')
+		os.system('docker cp vertebral_labeling:/qc'+' '+str(i)+'/'+'qc_labeled_'+os.path.basename(str(i)))
+		os.system('docker exec -it vertebral_labeling rm -rf qc')
+		os.system('docker exec -it vertebral_labeling rm -f /*.nii.gz')		
+		
+		
+					
+		#os.system('cd '+str(i)+' && sct_qc -i '+os.path.basename(str(i))+'.nii.gz -s '+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
+		#os.system('mv -v '+str(i)+'/qc '+str(i)+'/qc_labeled_'+os.path.basename(str(i)))
+		
+		
+			
 	command63='docker stop vertebral_labeling'
 	command64='docker stop vertebral_labeling'
 	exit19 = subprocess.run(command63, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
@@ -855,10 +872,25 @@ def singularity():
 		os.system(command75)
 		os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
 		os.system('rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz')
+				
 		os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+os.path.basename(str(i))+'_seg_labeled.nii.gz '+enigma_folder)			
 		os.system('mv '+enigma_folder+'/'+os.path.basename(str(i))+'_seg_labeled.nii.gz '+str(i))
-		os.system('cd '+str(i)+' && sct_qc -i '+os.path.basename(str(i))+'.nii.gz -s '+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
-		os.system('mv -v '+str(i)+'/qc '+str(i)+'/qc_labeled_'+os.path.basename(str(i)))
+		
+		os.system('cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/'+os.path.basename(str(i))+'.nii.gz')
+		os.system('cp '+str(i)+'/'+os.path.basename(str(i))+'_seg_labeled.nii.gz '+enigma_folder+'/vertebral_labeling.simg/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
+		os.system('chmod -R 777 vertebral_labeling.simg/'+os.path.basename(str(i))+'.nii.gz')
+		os.system('chmod -R 777 vertebral_labeling.simg/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
+		command_1 = 'singularity exec -e --env SCT_DIR=/spinalcordtoolbox --env PATH=/spinalcordtoolbox/bin:$PATH --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ sct_qc -i /'+os.path.basename(str(i))+'.nii.gz -s /'+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae'
+		command_2 = 'apptainer exec -e --env SCT_DIR=/spinalcordtoolbox --env PATH=/spinalcordtoolbox/bin:$PATH --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ sct_qc -i /'+os.path.basename(str(i))+'.nii.gz -s /'+os.path.basename(str(i))+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae'
+		try:
+			subprocess.run(command_1, shell=True, check=True)
+		except subprocess.CalledProcessError:
+			subprocess.run(command_2, shell=True, check=True)
+			
+		os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/'+os.getenv('USER')+'/qc '+str(i)+'/qc_labeled_'+os.path.basename(str(i)))
+		os.system('rm '+enigma_folder+'/vertebral_labeling.simg/*nii.gz')
+		
+		
 	progress_label.config(text="AUTOMATED LABELING FINISHED!")
 	progress_window.update()
 	progress_window.after(4000, progress_window.destroy)
@@ -1819,12 +1851,7 @@ def ext_singularity():
 		b1 = []
 		update_progress_bar(idx + 1, len(file_paths))
 		
-		subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)	
-		try:		
-			subprocess.run('singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py', shell=True, check=True)
-		except subprocess.CalledProcessError:
-			subprocess.run('apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py', shell=True, check=True)
-			
+		subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)		
 		cmd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 		cmd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 		try:		
