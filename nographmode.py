@@ -219,7 +219,7 @@ def modal_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -231,17 +231,15 @@ def modal_docker():
     			
 	password = None
 	
-	comando1='sudo -S docker stop vertebral_labeling'
-	comando2='sudo -S docker rm vertebral_labeling'
+	comando1='docker stop vertebral_labeling'
+	comando2='docker rm vertebral_labeling'
 
 	exit_code1 = subprocess.run('docker ps', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code1 != 0:
-		if password == None:
-			password = get_pass()	
-		result = subprocess.check_output("sudo -S docker ps", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando1, shell=True, check=True, input=password.encode())
-			subprocess.run(comando2, shell=True, check=True, input=password.encode())
+			subprocess.run(comando1, shell=True, check=True)
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -251,90 +249,70 @@ def modal_docker():
 		
 	exit_code2 = subprocess.run('docker ps -a', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code2 != 0:
-		if password == None:
-			password = get_pass()
-		result = subprocess.check_output("sudo -S docker ps -a", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps -a", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando2, shell=True, check=True, input=password.encode())
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
 		if 'vertebral_labeling' in result:
 			os.system('docker rm vertebral_labeling')
 						
+	loww1='docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
+	loww2='docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
+	
 	try:
-    		subprocess.run('nvidia-smi', check=True)
-    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
-	except FileNotFoundError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
-	except subprocess.CalledProcessError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'	
-	try:
-    		subprocess.run(docker_command, check=True)
-	except FileNotFoundError as e:
-		os.system('sudo '+docker_command)		
+		subprocess.run(loww1, shell=True, check=True, stderr=subprocess.DEVNULL)
+	except subprocess.CalledProcessError as e:
+			subprocess.run(loww2, shell=True, check=True)			
 
 	for i in (dir_list):
-		if '.txt' not in i: 
+		if not (i.endswith('.txt') or i.endswith('.csv')): 
 			try:
 				subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 			except subprocess.CalledProcessError as e:
-				if password == None:
-					password = get_pass()
-				subprocess.run('sudo -S docker start vertebral_labeling', shell=True, check=True, input=password.encode())	
+				subprocess.run('docker start vertebral_labeling', shell=True, check=True)	
 
 			command1 = 'cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
 			command2 = 'cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
-			get_exit(command1, command2)
+			os.system(command1)
 											
 			command3='docker exec -it vertebral_labeling chmod -R 777 /home/SCT/'+str(i)+'_seg.nii.gz'
 			command4='sudo docker exec -it vertebral_labeling chmod -R 777 /home/SCT/'+str(i)+'_seg.nii.gz'
-			get_exit(command3, command4)
+			os.system(command3)
 						
 			command5='docker exec -it vertebral_labeling chmod -R 777 /home/SCT/qc_'+str(i)
 			command6='sudo docker exec -it vertebral_labeling chmod -R 777 /home/SCT/qc_'+str(i)
-			exit3 = subprocess.run(command5, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			get_exit(command5, command6)
+			os.system(command5)
 		
 			command7='docker cp vertebral_labeling:/home/SCT/'+str(i)+'_seg.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz'
 			command8='sudo docker cp vertebral_labeling:/home/SCT/'+str(i)+'_seg.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz'
-			get_exit(command7, command8)
+			os.system(command7)
 		
 			command9='docker cp vertebral_labeling:/home/SCT/qc_'+str(i)+' '+before+'/'+str(i)+'/qc_'+str(i)
 			command10='sudo docker cp vertebral_labeling:/home/SCT/qc_'+str(i)+' '+before+'/'+str(i)+'/qc_'+str(i)
 			exit5 = subprocess.run(command9, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			get_exit(command9, command10)
+			os.system(command9)
 		
 			command11='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg.nii.gz'
 			command12='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg.nii.gz'
-			get_exit(command11, command12)
+			os.system(command11)
 		
 			command13='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'.nii.gz'
 			command14='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'.nii.gz'
-			get_exit(command13, command14)
+			os.system(command13)
 		
 			command15='docker exec -it vertebral_labeling rm -r /home/SCT/qc_'+str(i)
 			command16='sudo docker exec -it vertebral_labeling rm -r /home/SCT/qc_'+str(i)
-			get_exit(command15, command16)
+			os.system(command15)
 					
 	command17='docker stop vertebral_labeling'
 	command18='sudo -S docker stop vertebral_labeling'
-	exit9 = subprocess.run(command17, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit9 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command18, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command17)
+	subprocess.run(command17, shell=True, check=True)
+
 	command19='docker rm vertebral_labeling'
 	command20='sudo -S docker rm vertebral_labeling'
-	exit10 = subprocess.run(command19, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit10 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command20, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command19)
+	os.system(command19)
 				
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
@@ -377,12 +355,9 @@ def modal_docker():
 def modal_singularity():			 			 	       	
 	print('\033[94m\033[1mPLEASE TYPE THE PATH OF THE\033[0m \033[92m\033[1mEnigma-SC\033[0m \033[94m\033[1mFOLDER\033[0m')
 	enigma_folder = input("Enigma-SC folder path: ")
-	if not enigma_folder:
-		print('\033[91m\033[1mNo folder selected.\033[0m')
-		return
 	print('The \033[92m\033[1mEnigma-SC\033[0m folder selected is located at: '+enigma_folder)
 	
-	print('\033[94m\033[1mNOW TYPE THE PATH OF THE\033[0m \033[92m\033[1mPREPARED\033[0m \033[94m\033[1mFOLDER:\033[0m')		 			 	       	
+	print('\033[94m\033[1mPLEASE TYPE THE PATH OF THE\033[0m \033[92m\033[1mPREPARED\033[0m \033[94m\033[1mFOLDER:\033[0m')
 	file_paths = input("Prepared folder path: ")
 	if not file_paths:
 		print('\033[91m\033[1mNo folders selected.\033[0m')
@@ -392,11 +367,22 @@ def modal_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
-	before = str(file_paths)          	            	 			
+	before = str(file_paths)
 		
+	with open(enigma_folder+'/vertebral_labeling.simg/spine.py', 'r') as arquivo_leitura:
+		linhas = arquivo_leitura.readlines()
+	with open(enigma_folder+'/vertebral_labeling.simg/spine.py', 'w') as arquivo_escrita:
+		for linha in linhas:
+			if 'enigma_folder=' in linha:
+				linha_modificada = linha.replace('enigma_folder=', f"enigma_folder='{enigma_folder}'\n")
+				arquivo_escrita.write(linha_modificada)
+			else:
+				arquivo_escrita.write(linha)		
+        	            	 		
+
 	exit_code = os.system("singularity --version")
 	exity_code = os.system("apptainer --version")
 	if exit_code and exity_code != 0:
@@ -417,44 +403,53 @@ def modal_singularity():
 				if 'scripts' not in i:
 					command21='rm -rf '+path+'/'+str(i)
 					command22='sudo rm -rf '+path+'/'+str(i)
-					get_exit(command21, command22)		
+					os.system('rm -rf '+path+'/'+str(i))		
     	 
-	for i in dir_list2: 
-		if '.txt' not in i:
+	for i in dir_list2:
+		if not (i.endswith('.txt') or i.endswith('.csv')): 
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):
 				command23='rm vertebral_labeling.simg/home/SCT/*nii.gz'
 				command24='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
-				get_exit(command23, command24)
+				#get_exit(command23, command24)
+				os.system('rm '+enigma_folder+'/vertebral_labeling.simg/home/SCT/*nii.gz')
 			if any(arq.endswith('.cache') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):
 				command25='rm vertebral_labeling.simg/home/SCT/*nii.gz'
 				command26='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
-				get_exit(command25, command26)			
+				#get_exit(command25, command26)
+				os.system('rm '+enigma_folder+'/vertebral_labeling.simg/home/SCT/*nii.gz')			
 			os.system ('cd '+before+'/'+str(i))
 			command27='cd '+before+'/'+str(i)+' && '+'cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
 			command28='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
-			get_exit(command27, command28)
+			#get_exit(command27, command28)
+			os.system(command27)
 			command29='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
-			command30='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
-			get_exit(command29, command30)				
+			ccommand30='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
+			#get_exit(command29, command30)
+			os.system(command29)				
 			try:
-				command31='singularity exec --writable vertebral_labeling.simg/ python3 /spine.py'
-				command32='sudo singularity exec --writable vertebral_labeling.simg/ python3 /spine.py'
-				get_exit(command31, command32)		
-			except subprocess.CalledProcessError:
-				command33='apptainer exec --writable vertebral_labeling.simg/ python3 /spine.py'
+				command31='singularity exec --writable --bind '+before+':/home/SCT '+enigma_folder+'/vertebral_labeling.simg/ python3 /spine.py'
+				command32 = 'singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'	
+				#get_exit(command31, command32)
+				subprocess.run(command32,shell=True, check=True)		
+			except subprocess.CalledProcessError as e:
+				command33='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'
 				command34='sudo apptainer exec --writable vertebral_labeling.simg/ python3 /spine.py'
-				get_exit(command33, command34)
-			command35='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
+				#get_exit(command33, command34)
+				os.system(command33)
+			command35='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'	
 			command36='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
-			get_exit(command35, command36)				
+			#get_exit(command35, command36)
+			os.system(command35)			
 			try:
-				command37='singularity exec --writable vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
+				command37='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
 				command38='sudo singularity exec --writable vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
-				get_exit(command37, command38)
-			except subprocess.CalledProcessError:
-				command39='apptainer exec --writable vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
+				#get_exit(command37, command38)
+				subprocess.run(command37,shell=True, check=True)
+			except subprocess.CalledProcessError as e:
+				command39='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
 				command40='sudo apptainer exec --writable vertebral_labeling.simg/ chmod -R 777 /home/SCT/qc_'+str(i)
-				get_exit(command39, command40)	
+				#get_exit(command39, command40)
+				os.system(command39)	
 			command41='mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz '+before+'/'+str(i)
 			subprocess.run(command41, shell=True, check=True)
 			command47='mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_'+str(i)+' '+before+'/'+str(i)+'/qc_'+str(i)
@@ -462,12 +457,13 @@ def modal_singularity():
 			try:
 				command49='singularity exec --writable --nv vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz'
 				command50='sudo singularity exec --writable --nv vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz'
-				get_exit(command49, command50)
-			except subprocess.CalledProcessError:
-				command51='apptainer exec --writable --nv vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz'
+				#get_exit(command49, command50)
+				subprocess.run('singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz', shell=True, check=True)
+			except subprocess.CalledProcessError as e:
+				command51='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz'
 				command52='sudo apptainer exec --writable --nv vertebral_labeling.simg/ rm -f /home/SCT/'+str(i)+'.nii.gz'	
-				get_exit(command51, command52)	
-
+				#get_exit(command51, command52)	
+				os.system(command51)
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')	
@@ -517,7 +513,7 @@ def docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)			
@@ -529,17 +525,15 @@ def docker():
     		
 	password = None		
 		
-	comando1='sudo -S docker stop vertebral_labeling'
-	comando2='sudo -S docker rm vertebral_labeling'
+	comando1='docker stop vertebral_labeling'
+	comando2='docker rm vertebral_labeling'
 
 	exit_code1 = subprocess.run('docker ps', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit_code1 != 0:
-		if password == None:
-			password = get_pass()	
-		result = subprocess.check_output("sudo -S docker ps", shell=True, text=True, input=password)
+	if exit_code1 != 0:	
+		result = subprocess.check_output("docker ps", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando1, shell=True, check=True, input=password.encode('utf-8'))
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando1, shell=True, check=True)
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -549,11 +543,9 @@ def docker():
 		
 	exit_code2 = subprocess.run('docker ps -a', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code2 != 0:
-		if password == None:
-			password = get_pass()
-		result = subprocess.check_output("sudo -S docker ps -a", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps -a", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -561,94 +553,62 @@ def docker():
 			os.system('docker rm vertebral_labeling')																	
 	try:
     		subprocess.run('nvidia-smi', check=True)
-    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except FileNotFoundError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except subprocess.CalledProcessError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'	
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'	
 	try:
     		subprocess.run(docker_command, check=True)
 	except FileNotFoundError as e:
-		os.system('sudo '+docker_command)
-
+		os.system(docker_command)
 							
 	for i in (dir_list):
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			command53='docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			command54='sudo -S docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
-			try:
-				subprocess.run(command53, shell=True, check=True, stderr=subprocess.DEVNULL)
-			except subprocess.CalledProcessError as e:
-				if password == None:
-					password = get_pass()
-				subprocess.run(command54, shell=True, check=True, input=password.encode('utf-8'))
+			os.system(command53)
 			command55='docker start vertebral_labeling'
-			command56='sudo -S docker start vertebral_labeling'
-			try:
-				subprocess.run(command55, shell=True, check=True, stderr=subprocess.DEVNULL)
-			except subprocess.CalledProcessError as e:
-				if password == None:
-					password = get_pass()
-				subprocess.run(command56, shell=True, check=True, input=password.encode('utf-8'))					
+			command56='docker start vertebral_labeling'
+			os.system(command55)
+					
 			comando_11 = 'docker exec -it vertebral_labeling python3 /home/scripts/cuda.py'
-			comando_12 = 'sudo -S docker exec -it vertebral_labeling python3 /home/scripts/cuda.py'
-			comando_2 = 'sudo docker exec -it vertebral_labeling python3 /home/scripts/cpu.py'
-			command_1 = 'sudo docker exec -it vertebral_labeling python3 /home/scripts/cuda.py'
+			comando_12 = 'docker exec -it vertebral_labeling python3 /home/scripts/cuda.py'
+			comando_2 = 'docker exec -it vertebral_labeling python3 /home/scripts/cpu.py'
+			command_1 = 'docker exec -it vertebral_labeling python3 /home/scripts/cuda.py'
 			file_to_check = '/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'
 			command_21 = 'docker exec -it vertebral_labeling python3 /home/scripts/cpu.py'
-			command_22 = 'sudo -S docker exec -it vertebral_labeling python3 /home/scripts/cpu.py'
-			exit16 = subprocess.run(comando_11, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit16 != 0:
-				os.system('sudo docker exec -it vertebral_labeling python3 /home/scripts/cuda.py')
-			else:
-				os.system('docker exec -it vertebral_labeling python3 /home/scripts/cuda.py')	
+			command_22 = 'docker exec -it vertebral_labeling python3 /home/scripts/cpu.py'
+			os.system(comando_11)	
 				
 			check_file_command1 = f'docker exec -it vertebral_labeling test -f {file_to_check} && echo "found" || echo "not found"'	      				
-			check_file_command2 = f'sudo -S docker exec -it vertebral_labeling test -f {file_to_check} && echo "found" || echo "not found"'
-			exit15 = subprocess.run(check_file_command1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit15 != 0:
-				check_file_command = check_file_command2
-			else:
-				check_file_command = check_file_command1
-			
-			check_result = subprocess.run(check_file_command, shell=True, stdout=subprocess.PIPE, text=True)
+			check_file_command2 = f'sudo -S docker exec -it vertebral_labeling test -f {file_to_check} && echo "found" || echo "not found"'			
+			check_result = subprocess.run(check_file_command1, shell=True, stdout=subprocess.PIPE, text=True)
 			if "not found" in check_result.stdout:
 				print("\033[93mTried to predict on GPU, but your GPU is not able to work on this task. Please check your CUDA settings\033[0m")
 				print('\033[95m\033[1mNow trying to perform on CPU, this may take much more time to finish\033[0m')
-				exit16 = subprocess.run(command_21, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit16 != 0:
-					os.system('sudo docker exec -it vertebral_labeling python3 /home/scripts/cpu.py')
-				else:
-					os.system('docker exec -it vertebral_labeling python3 /home/scripts/cpu.py')
+				os.system(command_21)
 			command555='docker exec -it vertebral_labeling chmod -R 777 /home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'
 			command666='sudo docker exec -it vertebral_labeling chmod -R 777 /home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'
-			get_exit(command555, command666)
+			os.system(command555)
 			command515='docker cp vertebral_labeling:/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz'
 			command616='sudo docker cp vertebral_labeling:/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz'
-			get_exit(command515, command616)
+			os.system(command515)
 			command575='docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			command676='sudo docker exec -it vertebral_labeling rm -f /home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
-			get_exit(command575, command676)		
+			os.system(command575)		
 			os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
 			os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))	
 	command63='docker stop vertebral_labeling'
-	command64='sudo -S docker stop vertebral_labeling'
+	command64='docker stop vertebral_labeling'
 	exit19 = subprocess.run(command63, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit19 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command64, shell=True, check=True, input=password.encode('utf-8'))
+		subprocess.run(command64, shell=True, check=True)
 	else:
 		os.system(command63)
 	command65='docker rm vertebral_labeling'
-	command66='sudo -S docker rm vertebral_labeling'
-	exit20 = subprocess.run(command65, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit20 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command66, shell=True, check=True, input=password.encode('utf-8'))
-	else:
-		os.system(command65)
+	command66='docker rm vertebral_labeling'
+	os.system(command65)
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')
@@ -702,7 +662,7 @@ def singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -728,45 +688,30 @@ def singularity():
 				if 'scripts' not in i:
 					command21='rm -rf '+path+'/'+str(i)
 					command22='sudo -S rm -rf '+path+'/'+str(i)
-					exit2 = subprocess.run(command21, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-					if exit2 != 0:
-						if password == None:
-							password = get_pass()
-						subprocess.run(command22, shell=True, check=True, input=password.encode('utf-8'))
-					else:
-						os.system(command21)
+					os.system(command21)
 					
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/')):
 				command219='rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
 				command222='sudo -S rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
-				exit238 = subprocess.run(command219, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit238 != 0:
-					if password == None:
-						password = get_pass()
-					subprocess.run(command222, shell=True, check=True, input=password.encode('utf-8'))
-				else:
-					os.system(command219)	
+				os.system(command219)	
 			command67='cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder
 			command68='sudo cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder
-			get_exit(command67, command68)
+			os.system(command67)
 			command69='chmod -R 777 '+enigma_folder+'/'+str(i)+'.nii.gz'
 			command70='sudo chmod -R 777 '+enigma_folder+'/'+str(i)+'.nii.gz'
-			get_exit(command69, command70)
-			try:
-				os.system('mv '+str(i)+'.nii.gz '+'vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+str(i)+'.nii.gz '+'vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz')	
+			os.system(command69)
+			os.system('mv '+str(i)+'.nii.gz '+'vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz')	
 			command73='chmod -R 777 vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			command74='sudo chmod -R 777 vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
-			get_exit(command73, command74)
+			os.system(command73)
 			try:
 				subprocess.run(["singularity --version"], check=True, shell=True)
-				command_1 = 'singularity exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_12 = 'sudo singularity exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_2 = 'singularity exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				command_22= 'sudo singularity exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
+				command_1 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
+				command_12 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
+				command_2 = 'ssingularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
+				command_22= 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
 				exit333 = subprocess.run(command_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 				if exit333 != 0:
 					command111 = command_12
@@ -791,10 +736,10 @@ def singularity():
 						command211 = command_2
 					subprocess.run(command211, shell=True)
 			except subprocess.CalledProcessError:
-				command_11 = 'apptainer exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_11_1 = 'sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_22 = 'apptainer exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				command_22_2 = 'sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
+				command_11 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
+				command_11_1 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
+				command_22 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
+				command_22_2 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
 				exit3333 = subprocess.run(command_11, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 				if exit3333 != 0:
 					command1111 = command_11_1
@@ -820,25 +765,13 @@ def singularity():
 					subprocess.run(command_221, shell=True)
 			command75='chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'
 			command76='sudo chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'			
-			get_exit(command75, command76)
+			os.system(command75)
 			os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz')
-			try:
-				os.system('rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz')
-			try:
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder)			
-			try:
-				os.system('mv '+enigma_folder+'/'+str(i)+'_seg_labeled.nii.gz '+before+'/'+str(i))
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+str(i)+'_seg_labeled.nii.gz '+before+'/'+str(i))
+			os.system('rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder)			
+			os.system('mv '+enigma_folder+'/'+str(i)+'_seg_labeled.nii.gz '+before+'/'+str(i))
 			os.system('cd '+before+'/'+str(i)+' && sct_qc -i '+str(i)+'.nii.gz -s '+str(i)+'_seg_labeled.nii.gz'+' -p sct_label_vertebrae')
-			try:
-				os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
+			os.system('mv -v '+before+'/'+str(i)+'/qc '+before+'/'+str(i)+'/qc_labeled_'+str(i))
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')
@@ -889,13 +822,13 @@ def manual():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
 		
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			os.system('cd '+before+'/'+str(i)+' && sct_label_utils -i '+str(i)+'.nii.gz'+' -create-viewer 2,3 -o '+str(i)+'_labels_disc.nii.gz')
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
@@ -945,7 +878,7 @@ def reg_aut_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
@@ -957,17 +890,15 @@ def reg_aut_docker():
     		
 	password = None	
     				
-	comando1='sudo -S docker stop vertebral_labeling'
-	comando2='sudo -S docker rm vertebral_labeling'
+	comando1='docker stop vertebral_labeling'
+	comando2='docker rm vertebral_labeling'
 
 	exit_code1 = subprocess.run('docker ps', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code1 != 0:
-		if password == None:
-			password = get_pass()	
-		result = subprocess.check_output("sudo -S docker ps", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando1, shell=True, check=True, input=password.encode('utf-8'))
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando1, shell=True, check=True)
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -977,11 +908,9 @@ def reg_aut_docker():
 		
 	exit_code2 = subprocess.run('docker ps -a', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code2 != 0:
-		if password == None:
-			password = get_pass()
-		result = subprocess.check_output("sudo -S docker ps -a", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps -a", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -989,184 +918,166 @@ def reg_aut_docker():
 			os.system('docker rm vertebral_labeling')																	
 	try:
     		subprocess.run('nvidia-smi', check=True)
-    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except FileNotFoundError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except subprocess.CalledProcessError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'	
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'	
 	try:
     		subprocess.run(docker_command, check=True)
 	except FileNotFoundError as e:
-		os.system('sudo '+docker_command)
-				
+		os.system(docker_command)					
 		
 	for i in dir_list:
-		if '.txt' not in i:
-			try:
-				subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
-			except subprocess.CalledProcessError as e:
-				if password == None:
-					password = get_pass()
-				subprocess.run('sudo -S docker start vertebral_labeling', shell=True, check=True, input=password.encode())
+		if not (i.endswith('.txt') or i.endswith('.csv')):
+			subprocess.run('docker start vertebral_labeling', shell=True, check=True)
 			command77='cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'
 			command78='cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'	
-			get_exit(command77, command78)
+			os.system(command77)
 			command79='cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz vertebral_labeling:/home/SCT/'
 			command80='cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz vertebral_labeling:/home/SCT/'
-			get_exit(command79, command80)
+			os.system(command79)
 			command81='cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz vertebral_labeling:/home/SCT/'
 			command82='cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz vertebral_labeling:/home/SCT/'
-			get_exit(command81, command82)
+			os.system(command81)
 			command83='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine1.py'
 			command84='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine1.py'
-			get_exit(command83, command84)
+			os.system(command83)
 			command85='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/'+str(i)+'_labels_vert.nii.gz'
 			command86='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/'+str(i)+'_labels_vert.nii.gz'
-			get_exit(command85, command86)
+			os.system(command85)
 			command87='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine2.py'
 			command88='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine2.py'
-			get_exit(command87, command88)
+			os.system(command87)
 			command89='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/anat2template.nii.gz'
 			command90='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/anat2template.nii.gz'
-			get_exit(command89, command90)
+			os.system(command89)
 			command91='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/straight_ref.nii.gz'
 			command92='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/straight_ref.nii.gz'
-			get_exit(command91, command92)
+			os.system(command91)
 			command93='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/template2anat.nii.gz'
 			command94='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/template2anat.nii.gz'
-			get_exit(command93, command94)
+			os.system(command93)
 			command95='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_anat2template.nii.gz'
 			command96='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_anat2template.nii.gz'
-			get_exit(command95, command96)
+			os.system(command95)
 			command97='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_curve2straight.nii.gz'
 			command98='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_curve2straight.nii.gz'
-			get_exit(command97, command98)
+			os.system(command97)
 			command99='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_straight2curve.nii.gz'
 			command100='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_straight2curve.nii.gz'
-			get_exit(command99, command100)
+			os.system(command99)
 			command101='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_template2anat.nii.gz'
 			command102='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/warp_template2anat.nii.gz'
-			get_exit(command101, command102)
+			os.system(command101)
 			command103='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine3.py'
 			command104='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine3.py'
-			get_exit(command103, command104)
+			os.system(command103)
 			command105='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/label'
 			command106='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/label'
-			get_exit(command105, command106)
+			os.system(command105)
 			command107='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/straightening.cache'
 			command108='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/straightening.cache'
-			get_exit(command107, command108)
+			os.system(command107)
 			command109='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/qc_template_'+str(i)
 			command110='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/qc_template_'+str(i)
-			get_exit(command109, command110)
+			os.system(command109)
 			command111='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/qc_warp_'+str(i)
 			command112='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling chmod -R 777 /home/SCT/qc_warp_'+str(i)
-			get_exit(command111, command112)
+			os.system(command111)
 			command113='docker cp vertebral_labeling:/home/SCT/anat2template.nii.gz '+before+'/'+str(i)+'/anat2template.nii.gz'
 			command114='sudo docker cp vertebral_labeling:/home/SCT/anat2template.nii.gz '+before+'/'+str(i)+'/anat2template.nii.gz'		
-			get_exit(command113, command114)
+			os.system(command113)
 			command115='docker cp vertebral_labeling:/home/SCT/'+str(i)+'_labels_vert.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_labels_vert.nii.gz'
 			command116='sudo docker cp vertebral_labeling:/home/SCT/'+str(i)+'_labels_vert.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_labels_vert.nii.gz'		
-			get_exit(command115, command116)
+			os.system(command115)
 			if 'label' in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/label')
 			command117='docker cp vertebral_labeling:/home/SCT/label '+before+'/'+str(i)+'/label'
 			command118='sudo docker cp vertebral_labeling:/home/SCT/label '+before+'/'+str(i)+'/label'			
-			get_exit(command117, command118)
+			os.system(command117)
 			if 'qc_template_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_template_'+str(i))
 			command119='docker cp vertebral_labeling:/home/SCT/qc_template_'+str(i)+' '+before+'/'+str(i)+'/qc_template_'+str(i)
 			command120='sudo docker cp vertebral_labeling:/home/SCT/qc_template_'+str(i)+' '+before+'/'+str(i)+'/qc_template_'+str(i)					
-			get_exit(command119, command120)
+			os.system(command119)
 			if 'qc_warp_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_warp_'+str(i))
 			command121='docker cp vertebral_labeling:/home/SCT/qc_warp_'+str(i)+' '+before+'/'+str(i)+'/qc_warp_'+str(i)
 			command122='sudo docker cp vertebral_labeling:/home/SCT/qc_warp_'+str(i)+' '+before+'/'+str(i)+'/qc_warp_'+str(i)	
-			get_exit(command121, command122)
+			os.system(command121)
 			command123='docker cp vertebral_labeling:/home/SCT/straight_ref.nii.gz '+before+'/'+str(i)+'/straight_ref.nii.gz'
 			command124='sudo docker cp vertebral_labeling:/home/SCT/straight_ref.nii.gz '+before+'/'+str(i)+'/straight_ref.nii.gz'		
-			get_exit(command123, command124)
+			os.system(command123)
 			command125='docker cp vertebral_labeling:/home/SCT/straightening.cache '+before+'/'+str(i)+'/straightening.cache'
 			command126='sudo docker cp vertebral_labeling:/home/SCT/straightening.cache '+before+'/'+str(i)+'/straightening.cache'		
-			get_exit(command125, command126)
+			os.system(command125)
 			command127='docker cp vertebral_labeling:/home/SCT/template2anat.nii.gz '+before+'/'+str(i)+'/template2anat.nii.gz'
 			command128='sudo docker cp vertebral_labeling:/home/SCT/template2anat.nii.gz '+before+'/'+str(i)+'/template2anat.nii.gz'	
-			get_exit(command127, command128)
+			os.system(command127)
 			command129='docker cp vertebral_labeling:/home/SCT/warp_anat2template.nii.gz '+before+'/'+str(i)+'/warp_anat2template.nii.gz'
 			command130='sudo docker cp vertebral_labeling:/home/SCT/warp_anat2template.nii.gz '+before+'/'+str(i)+'/warp_anat2template.nii.gz'
-			get_exit(command129, command130)
+			os.system(command129)
 			command131='docker cp vertebral_labeling:/home/SCT/warp_curve2straight.nii.gz '+before+'/'+str(i)+'/warp_curve2straight.nii.gz'
 			command132='sudo docker cp vertebral_labeling:/home/SCT/warp_curve2straight.nii.gz '+before+'/'+str(i)+'/warp_curve2straight.nii.gz'
-			get_exit(command131, command132)
+			os.system(command131)
 			command133='docker cp vertebral_labeling:/home/SCT/warp_straight2curve.nii.gz '+before+'/'+str(i)+'/warp_straight2curve.nii.gz'
 			command134='sudo docker cp vertebral_labeling:/home/SCT/warp_straight2curve.nii.gz '+before+'/'+str(i)+'/warp_straight2curve.nii.gz'
-			get_exit(command133, command134)
+			os.system(command133)
 			command135='docker cp vertebral_labeling:/home/SCT/warp_template2anat.nii.gz '+before+'/'+str(i)+'/warp_template2anat.nii.gz'
 			command136='sudo docker cp vertebral_labeling:/home/SCT/warp_template2anat.nii.gz '+before+'/'+str(i)+'/warp_template2anat.nii.gz'
-			get_exit(command135, command136)
+			os.system(command135)
 			command137='docker exec -it vertebral_labeling rm -rf /home/SCT/qc_template_'+str(i)
 			command138='sudo docker exec -it vertebral_labeling rm -rf /home/SCT/qc_template_'+str(i)
-			get_exit(command137, command138)
+			os.system(command137)
 			command141='docker exec -it vertebral_labeling rm -rf /home/SCT/qc_warp_'+str(i)
 			command142='sudo docker exec -it vertebral_labeling rm -rf /home/SCT/qc_warp_'+str(i)
-			get_exit(command141, command142)
+			os.system(command141)
 			command143='docker exec -it vertebral_labeling rm -rf /home/SCT/label'
 			command144='sudo docker exec -it vertebral_labeling rm -rf /home/SCT/label'
-			get_exit(command143, command144)
+			os.system(command143)
 			command145='docker exec -it vertebral_labeling rm -f /home/SCT/anat2template.nii.gz'
 			command146='sudo docker exec -it vertebral_labeling rm -f /home/SCT/anat2template.nii.gz'
-			get_exit(command145, command146)
+			os.system(command145)
 			command147='docker exec -it vertebral_labeling rm -f /home/SCT/straight_ref.nii.gz'
 			command148='sudo docker exec -it vertebral_labeling rm -f /home/SCT/straight_ref.nii.gz'
-			get_exit(command147, command148)
+			os.system(command147)
 			command149='docker exec -it vertebral_labeling rm -f /home/SCT/straightening.cache'
 			command150='sudo docker exec -it vertebral_labeling rm -f /home/SCT/straightening.cache'
-			get_exit(command149, command150)
+			os.system(command149)
 			command151='docker exec -it vertebral_labeling rm -f /home/SCT/template2anat.nii.gz'
 			command152='sudo docker exec -it vertebral_labeling rm -f /home/SCT/template2anat.nii.gz'
-			get_exit(command151, command152)
+			os.system(command151)
 			command153='docker exec -it vertebral_labeling rm -f /home/SCT/warp_anat2template.nii.gz'
 			command154='sudo docker exec -it vertebral_labeling rm -f /home/SCT/warp_anat2template.nii.gz'
-			get_exit(command153, command154)
+			os.system(command153)
 			command155='docker exec -it vertebral_labeling rm -f /home/SCT/warp_curve2straight.nii.gz'
 			command156='sudo docker exec -it vertebral_labeling rm -f /home/SCT/warp_curve2straight.nii.gz'
-			get_exit(command155, command156)
+			os.system(command155)
 			command157='docker exec -it vertebral_labeling rm -f /home/SCT/warp_straight2curve.nii.gz'
 			command158='sudo docker exec -it vertebral_labeling rm -f /home/SCT/warp_straight2curve.nii.gz'
-			get_exit(command157, command158)
+			os.system(command157)
 			command159='docker exec -it vertebral_labeling rm -f /home/SCT/warp_template2anat.nii.gz'
 			command160='sudo docker exec -it vertebral_labeling rm -f /home/SCT/warp_template2anat.nii.gz'
-			get_exit(command159, command160)
+			os.system(command159)
 			command161='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'.nii.gz'
 			command162='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'.nii.gz'
-			get_exit(command161, command162)
+			os.system(command161)
 			command163='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_labels_vert.nii.gz'
 			command164='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_labels_vert.nii.gz'
-			get_exit(command163, command164)
+			os.system(command163)
 			command165='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg.nii.gz'
 			command166='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg.nii.gz'
-			get_exit(command165, command166)
+			os.system(command165)
 			command167='docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg_labeled.nii.gz'
 			command168='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+str(i)+'_seg_labeled.nii.gz'
-			get_exit(command167, command168)		
+			os.system(command167)		
 	command169='docker stop vertebral_labeling'
-	command170='sudo -S docker stop vertebral_labeling'
-	exit190 = subprocess.run(command169, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit190 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command170, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command169)
+	command170='docker stop vertebral_labeling'
+	os.system(command169)
 	command171='docker rm vertebral_labeling'
-	command172='sudo -S docker rm vertebral_labeling'
-	exit210 = subprocess.run(command171, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit210 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command172, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command171)				
+	command172='docker rm vertebral_labeling'
+	os.system(command171)				
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')
@@ -1227,7 +1138,7 @@ def reg_aut_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
@@ -1252,231 +1163,88 @@ def reg_aut_singularity():
 				if 'scripts' not in i:
 					command21='rm -rf '+path+'/'+str(i)
 					command22='sudo -S rm -rf '+path+'/'+str(i)
-					exit2 = subprocess.run(command21, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-					if exit2 != 0:
-						if password == None:
-							password = get_pass()
-						subprocess.run(command22, shell=True, check=True, input=password.encode('utf-8'))
-					else:
-						os.system(command21)				
+					os.system(command21)				
 		
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):	
 				command219='rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
 				command222='sudo -S rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
-				exit238 = subprocess.run(command219, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit238 != 0:
-					if password == None:
-						password = get_pass()
-					subprocess.run(command222, shell=True, check=True, input=password.encode('utf-8'))
-				else:
-					os.system(command219)
+				os.system(command219)
 			if any(arq.endswith('.cache') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):			
 				command219='rm vertebral_labeling.simg/home/SCT/straightening.cache'
 				command222='sudo -S rm vertebral_labeling.simg/home/SCT/straightening.cache'
-				exit238 = subprocess.run(command219, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit238 != 0:
-					if password == None:
-						password = get_pass()
-					subprocess.run(command222, shell=True, check=True, input=password.encode('utf-8'))
-				else:
-					os.system(command219)
+				os.system(command219)
 			command171='cd '+before+'/'+str(i)+' && '+'cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
 			command172='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
-			get_exit(command171, command172)
+			os.system(command171)
 			command173='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
 			command174='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
-			try:
-				subprocess.run(command173, shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system(command174)				
+			os.system(command173)				
 			command175='cd '+before+'/'+str(i)+' && '+'cp '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
 			command176='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'_seg.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
-			get_exit(command175, command176)
+			os.system(command175)
 			command177='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
 			command178='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz'
-			try:
-				subprocess.run(command177, shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system(command178)	
-			command179='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz'
+			os.system(command177)	
+			command179='cd '+before+'/'+str(i)+' && '+'cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz'
 			command180='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'_seg_labeled.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz'
-			get_exit(command179, command180)
+			os.system(command179)
 			command181='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz'
 			command182='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz'
-			try:
-				subprocess.run(command181, shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system(command182)			
-			cmd_1='singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine1.py'
-			cmd_11='sudo singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine1.py'
-			cmd_2='apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine1.py'
-			cmd_22='sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine1.py'
-			exit3 = subprocess.run(cmd_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit3 != 0:
-				cmd = cmd_11
-			else:
-				cmd = cmd_1
-			try:		
-				subprocess.run(cmd, shell=True, check=True)
+			os.system(command181)			
+			cmd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine1.py'
+			cmd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine1.py'
+			try:	
+				subprocess.run(cmd_1, shell=True, check=True)
 			except subprocess.CalledProcessError:
-				exit4 = subprocess.run(cmd_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit4 != 0:
-					cmd = cmd_22
-				else:
-					cmd = cmd_2	
-				subprocess.run(cmd, shell=True, check=True)
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz')	
-			cmd_1='singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine2.py'
-			cmd_11='sudo singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine2.py'
-			cmd_2='apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine2.py'
-			cmd_22='sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine2.py'
-			exit3 = subprocess.run(cmd_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit3 != 0:
-				cmd = cmd_11
-			else:
-				cmd = cmd_1
+				subprocess.run(cmd_2, shell=True, check=True)
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz')	
+			cmd_11='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine2.py'
+			cmd_22='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine2.py'
 			try:		
-				subprocess.run(cmd, shell=True, check=True)
-			except subprocess.CalledProcessError:
-				exit4 = subprocess.run(cmd_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit4 != 0:
-					cmd = cmd_22
-				else:
-					cmd = cmd_2	
-				subprocess.run(cmd, shell=True, check=True)
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/anat2template.nii.gz',shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/anat2template.nii.gz')
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straight_ref.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straight_ref.nii.gz')
+				subprocess.run(cmd_11, shell=True, check=True)
+			except subprocess.CalledProcessError:	
+				subprocess.run(cmd_22, shell=True, check=True)
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/anat2template.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straight_ref.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/template2anat.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz')
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz')
+			cmd_111='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine3.py'
+			cmd_222='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine3.py'
 			try:		
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/template2anat.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/template2anat.nii.gz')
-			try:	
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz')
-			try:		
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz')
-			try:	
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz')
-			try:	
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz')
-			cmd_1='singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine3.py'
-			cmd_11='sudo singularity exec --writable --nv vertebral_labeling.simg/ python3 /spine3.py'
-			cmd_2='apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine3.py'
-			cmd_22='sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine3.py'
-			exit3 = subprocess.run(cmd_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit3 != 0:
-				cmd = cmd_11
-			else:
-				cmd = cmd_1
-			try:		
-				subprocess.run(cmd, shell=True, check=True)
-			except subprocess.CalledProcessError:
-				exit4 = subprocess.run(cmd_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit4 != 0:
-					cmd = cmd_22
-				else:
-					cmd = cmd_2	
-				subprocess.run(cmd, shell=True, check=True)	
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/label', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/label')	
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straightening.cache', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straightening.cache')		
-			try:	
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_template_'+str(i), shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_template_'+str(i))	
-			try:
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_warp_'+str(i), shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_warp_'+str(i))
-			try:
-				subprocess.run('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/anat2template.nii.gz '+before+'/'+str(i)+'/anat2template.nii.gz', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/anat2template.nii.gz '+before+'/'+str(i)+'/anat2template.nii.gz')	
-			try:
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_labels_vert.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_labels_vert.nii.gz')	
+				subprocess.run(cmd_111, shell=True, check=True)
+			except subprocess.CalledProcessError:	
+				subprocess.run(cmd_222, shell=True, check=True)	
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/label')	
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/straightening.cache')		
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_template_'+str(i))	
+			os.system('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/qc_warp_'+str(i))
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/anat2template.nii.gz '+before+'/'+str(i)+'/anat2template.nii.gz')	
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_labels_vert.nii.gz'+' '+before+'/'+str(i)+'/'+str(i)+'_labels_vert.nii.gz')	
 			if 'label' in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/label')
-			try:	
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/label'+' '+before+'/'+str(i)+'/label')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/label'+' '+before+'/'+str(i)+'/label')	
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/label'+' '+before+'/'+str(i)+'/label')	
 			if 'qc_template_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_template_'+str(i))
-			try:	
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_template_'+str(i)+' '+before+'/'+str(i)+'/qc_template_'+str(i))
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_template_'+str(i)+' '+before+'/'+str(i)+'/qc_template_'+str(i))	
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_template_'+str(i)+' '+before+'/'+str(i)+'/qc_template_'+str(i))	
 			if 'qc_warp_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_warp_'+str(i))
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_warp_'+str(i)+' '+before+'/'+str(i)+'/qc_warp_'+str(i))
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_warp_'+str(i)+' '+before+'/'+str(i)+'/qc_warp_'+str(i))
-			try:	
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straight_ref.nii.gz '+before+'/'+str(i)+'/straight_ref.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straight_ref.nii.gz '+before+'/'+str(i)+'/straight_ref.nii.gz')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straightening.cache '+before+'/'+str(i)+'/straightening.cache')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straightening.cache '+before+'/'+str(i)+'/straightening.cache')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/template2anat.nii.gz '+before+'/'+str(i)+'/template2anat.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/template2anat.nii.gz '+before+'/'+str(i)+'/template2anat.nii.gz')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz '+before+'/'+str(i)+'/warp_anat2template.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz '+before+'/'+ostr(i)+'/warp_anat2template.nii.gz')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz '+before+'/'+str(i)+'/warp_curve2straight.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz '+before+'/'+str(i)+'/warp_curve2straight.nii.gz')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz '+before+'/'+str(i)+'/warp_straight2curve.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz '+before+'/'+str(i)+'/warp_straight2curve.nii.gz')
-			try:		
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz '+before+'/'+str(i)+'/warp_template2anat.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz '+before+'/'+str(i)+'/warp_template2anat.nii.gz')
-			try:		
-				os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz')
-			try:		
-				os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz')
-			try:		
-				os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz')								
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/qc_warp_'+str(i)+' '+before+'/'+str(i)+'/qc_warp_'+str(i))
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straight_ref.nii.gz '+before+'/'+str(i)+'/straight_ref.nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/straightening.cache '+before+'/'+str(i)+'/straightening.cache')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/template2anat.nii.gz '+before+'/'+str(i)+'/template2anat.nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_anat2template.nii.gz '+before+'/'+str(i)+'/warp_anat2template.nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_curve2straight.nii.gz '+before+'/'+str(i)+'/warp_curve2straight.nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_straight2curve.nii.gz '+before+'/'+str(i)+'/warp_straight2curve.nii.gz')
+			os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz '+before+'/'+str(i)+'/warp_template2anat.nii.gz')
+			os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz')
+			os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg.nii.gz')
+			os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+str(i)+'_seg_labeled.nii.gz')								
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')
@@ -1532,13 +1300,13 @@ def reg_man():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
 		
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			if 'qc_template_manual_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_template_manual_'+str(i))
 			os.system('cd '+before+'/'+str(i)+' && sct_register_to_template -i '+str(i)+'.nii.gz'+' -s '+str(i)+'_seg.nii.gz -ldisc '+str(i)+'_labels_disc.nii.gz -c t1 -qc qc_template_manual_'+str(i))
@@ -1591,7 +1359,7 @@ def ext_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -1619,18 +1387,22 @@ def ext_docker():
     		raise SystemExit(1)	
     	
 	password = None	
+	
+	def update_progress_bar(current, total):
+		progress_percent = int((current / total) * 99)
+		progress_bar["value"] = progress_percent
+		progress_text["text"] = f"{progress_percent}% done"
+		progress_window.update()
 		
-	comando1='sudo -S docker stop vertebral_labeling'
-	comando2='sudo -S docker rm vertebral_labeling'
+	comando1='docker stop vertebral_labeling'
+	comando2='docker rm vertebral_labeling'
 
 	exit_code1 = subprocess.run('docker ps', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code1 != 0:
-		if password == None:
-			password = get_pass()	
-		result = subprocess.check_output("sudo -S docker ps", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando1, shell=True, check=True, input=password.encode('utf-8'))
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando1, shell=True, check=True)
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -1640,11 +1412,9 @@ def ext_docker():
 		
 	exit_code2 = subprocess.run('docker ps -a', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 	if exit_code2 != 0:
-		if password == None:
-			password = get_pass()
-		result = subprocess.check_output("sudo -S docker ps -a", shell=True, text=True, input=password)
+		result = subprocess.check_output("docker ps -a", shell=True, text=True)
 		if 'vertebral_labeling' in result:
-			subprocess.run(comando2, shell=True, check=True, input=password.encode('utf-8'))
+			subprocess.run(comando2, shell=True, check=True)
 	else:
 		result = subprocess.check_output("docker ps", shell=True, text=True)
 		result = str(result)
@@ -1652,43 +1422,38 @@ def ext_docker():
 			os.system('docker rm vertebral_labeling')																	
 	try:
     		subprocess.run('nvidia-smi', check=True)
-    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --gpus all --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except FileNotFoundError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'
 	except subprocess.CalledProcessError as gpu_error:
-    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:4.0'	
+    		docker_command = 'docker run -itd --ipc=host --name vertebral_labeling art2mri/vertebral_labeling:3.0'	
 	try:
     		subprocess.run(docker_command, check=True)
 	except FileNotFoundError as e:
-		os.system('sudo '+docker_command)			
+		os.system(docker_command)
 	
 	for i in dir_list:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			v = []
 			k = []
 			b1 = []
-			try:
-				subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
-			except subprocess.CalledProcessError as e:
-				if password == None:
-					password = get_pass()
-				subprocess.run('sudo -S docker start vertebral_labeling', shell=True, check=True, input=password.encode())
+			subprocess.run('docker start vertebral_labeling', shell=True, check=True)
 			
 			command183='docker cp '+before+'/'+str(i)+' vertebral_labeling:/home/'+str(i)
 			command184='sudo docker cp '+before+'/'+str(i)+' vertebral_labeling:/home/'+str(i)			
-			get_exit(command183, command184)
+			os.system(command183)
 			command185='docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine4.py'
 			command186='sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine4.py'
-			get_exit(command185, command186)
+			os.system(command185)
 			command187='docker exec -it vertebral_labeling chmod -R 777 /home/'+str(i)+'/'+str(i)+'_csa.csv'
 			command188='sudo docker exec -it vertebral_labeling chmod -R 777 /home/'+str(i)+'/'+str(i)+'_csa.csv'
-			get_exit(command187, command188)
+			os.system(command187)
 			command189='docker cp vertebral_labeling:/home/'+str(i)+'/'+str(i)+'_csa.csv'+' '+before+'/'+str(i)+'/'+str(i)+'_csa.csv'
 			command190='sudo docker cp vertebral_labeling:/home/'+str(i)+'/'+str(i)+'_csa.csv'+' '+before+'/'+str(i)+'/'+str(i)+'_csa.csv'
-			get_exit(command189, command190)
+			os.system(command189)
 			command191='docker exec -it vertebral_labeling rm -r /home/'+str(i)
 			command192='sudo docker exec -it vertebral_labeling rm -r /home/'+str(i)
-			get_exit(command191, command192)
+			os.system(command191)
 			with open(before+'/'+str(i)+'/'+str(i)+'_csa.csv', 'r', encoding='utf-8') as file:
 				sp = csv.reader(file)
 				for row in sp:
@@ -1720,24 +1485,12 @@ def ext_docker():
 				writer = csv.writer(csv_file)
 				writer.writerow(b1)
 			
-	command17='docker stop vertebral_labeling'
-	command18='sudo -S docker stop vertebral_labeling'
-	exit9 = subprocess.run(command17, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit9 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command18, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command17)
-	command19='docker rm vertebral_labeling'
-	command20='sudo -S docker rm vertebral_labeling'
-	exit10 = subprocess.run(command19, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-	if exit10 != 0:
-		if password == None:
-			password = get_pass()
-		subprocess.run(command20, shell=True, check=True, input=password.encode())
-	else:
-		os.system(command19)					
+	command169='docker stop vertebral_labeling'
+	command170='docker stop vertebral_labeling'
+	os.system(command169)
+	command171='docker rm vertebral_labeling'
+	command172='docker rm vertebral_labeling'
+	os.system(command171)				
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
 	print('\n')
@@ -1790,7 +1543,7 @@ def ext_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -1820,7 +1573,7 @@ def ext_singularity():
 				if 'scripts' not in i:
 					command21='rm -rf '+path+'/'+str(i)
 					command22='sudo rm -rf '+path+'/'+str(i)
-					get_exit(command21, command22)
+					os.system(command21)
 		
 	exit_code = os.system("singularity --version")
 	exity_code = os.system("apptainer --version")
@@ -1829,63 +1582,29 @@ def ext_singularity():
     		raise SystemExit(1)		
 				
 	for i in dir_list2:
-		if '.txt' not in i:
+		if not (i.endswith('.txt') or i.endswith('.csv')):
 			v = []
 			k = []
 			b1 = []
-			try:
-				subprocess.run ('cd '+before+'/'+str(i)+' && '+'cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i),  shell=True)
-			except subprocess.CalledProcessError as e:
-				os.system('cd '+before+'/'+str(i)+' && '+'sudo cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i), shell=True)	
-			try:		
-				subprocess.run('sudo singularity exec --writable vertebral_labeling.simg/ python3 /spine4.py', shell=True, check=True)
-			except subprocess.CalledProcessError:
-				subprocess.run('sudo apptainer exec --writable vertebral_labeling.simg/ python3 /spine4.py', shell=True, check=True)
+
+			subprocess.run ('cd '+before+'/'+str(i)+' && '+'cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i),  shell=True)			
+			cmd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			cmd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 			
-			cmd_1='singularity exec --writable vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_11='sudo singularity exec --writable vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_2='apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_22='sudo apptainer exec --writable --nv vertebral_labeling.simg/ python3 /spine4.py'
-			exit3 = subprocess.run(cmd_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit3 != 0:
-				cmd = cmd_11
-			else:
-				cmd = cmd_1
 			try:		
-				subprocess.run(cmd, shell=True, check=True)
-			except subprocess.CalledProcessError:
-				exit4 = subprocess.run(cmd_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit4 != 0:
-					cmd = cmd_22
-				else:
-					cmd = cmd_2	
-				subprocess.run(cmd, shell=True, check=True)				
-			try:			
-				subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv', shell=True, check=True)
-			except subprocess.CalledProcessError as e:
-				os.system('sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv')	
-			try:	
-				os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv'+' '+before+'/'+str(i)+'/'+str(i)+'_csa.csv')
-			except subprocess.CalledProcessError as e:
-				os.system('sudo mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv'+' '+before+'/'+str(i)+'/'+str(i)+'_csa.csv')
-			cmdd_1='singularity exec --writable --nv vertebral_labeling.simg/ rm -rf /home/'+str(i)
-			cmdd_11='sudo singularity exec --writable --nv vertebral_labeling.simg/ rm -rf /home/'+str(i)
-			cmdd_2='apptainer exec --writable --nv vertebral_labeling.simg/ rm -rf /home/'+str(i)
-			cmdd_22='sudo apptainer exec --writable --nv vertebral_labeling.simg/ rm -rf /home/'+str(i)
-			exit4 = subprocess.run(cmdd_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit4 != 0:
-				cmdd = cmdd_11
-			else:
-				cmdd = cmdd_1
+				subprocess.run(cmd_1, shell=True, check=True)
+			except subprocess.CalledProcessError:	
+				subprocess.run(cmd_2, shell=True, check=True)
+							
+			subprocess.run('chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv', shell=True, check=True)	
+			subprocess.run('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/'+str(i)+'/'+str(i)+'_csa.csv'+' '+before+'/'+str(i)+'/'+str(i)+'_csa.csv', shell=True, check=True)
+			cmdd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ rm -rf /home/'+str(i)
+			cmdd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ rm -rf /home/'+str(i)
 			try:		
-				subprocess.run(cmdd, shell=True, check=True)
+				subprocess.run(cmdd_1, shell=True)
 			except subprocess.CalledProcessError:
-				exit4 = subprocess.run(cmdd_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit4 != 0:
-					cmdd = cmdd_22
-				else:
-					cmdd = cmdd_2	
-				subprocess.run(cmdd, shell=True, check=True)					
+				subprocess.run(cmdd_2, shell=True)
+									
 			with open(before+'/'+str(i)+'/'+str(i)+'_csa.csv', 'r', encoding='utf-8') as file:
 				sp = csv.reader(file)
 				for row in sp:
@@ -1951,6 +1670,7 @@ def ext_singularity():
 	else:	      			
 		check_subfolders(str(before), str(before)+'/DataExtractionResults.txt')	
 		
+		
 #############################	
 
 def pack():
@@ -1964,16 +1684,14 @@ def pack():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if '.txt' not in i:
-			if '.csv' not in i:
-				print(str(i)+'.nii.gz')
+		if not (i.endswith('.txt') or i.endswith('.csv')):
+			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
 	
 	for i in dir_list:
-		if '.txt' not in i:
-			if '.csv' not in i:
-				os.system('cd '+str(before)+' && zip -r '+str(i)+'.zip'+' '+str(i)+' -x '+str(i)+'/'+str(i)+'.nii.gz')	
+		if not (i.endswith('.txt') or i.endswith('.csv')):
+			os.system('cd '+str(before)+' && zip -r '+str(i)+'.zip'+' '+str(i)+' -x '+str(i)+'/'+str(i)+'.nii.gz')	
 	print ('\033[92m\033[1mDATA PACKED AND READY TO GO!\033[0m')
 	print ('\033[94m\033[1mZIP files located at: '+str(before)+'\033[0m')		
 			
