@@ -1861,8 +1861,10 @@ def ext_singularity():
 		update_progress_bar(idx + 1, len(file_paths))
 		
 		subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)		
-		cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-		cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+		#cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+		#cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+		cmd_1 = 'singularity exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
+		cmd_2 = 'apptainer exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'		
 		try:		
 			subprocess.run(cmd_1, shell=True, check=True)
 		except subprocess.CalledProcessError:	

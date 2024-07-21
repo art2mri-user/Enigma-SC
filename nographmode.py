@@ -219,7 +219,7 @@ def modal_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -267,7 +267,7 @@ def modal_docker():
 			subprocess.run(loww2, shell=True, check=True)			
 
 	for i in (dir_list):
-		if not (i.endswith('.txt') or i.endswith('.csv')): 
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')): 
 			try:
 				subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 			except subprocess.CalledProcessError as e:
@@ -371,7 +371,7 @@ def modal_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -410,7 +410,7 @@ def modal_singularity():
 					os.system('rm -rf '+path+'/'+str(i))		
     	 
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')): 
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')): 
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):
 				command23='rm vertebral_labeling.simg/home/SCT/*nii.gz'
 				command24='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
@@ -522,7 +522,7 @@ def docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)			
@@ -573,7 +573,7 @@ def docker():
 		os.system(docker_command)
 							
 	for i in (dir_list):
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			command53='docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			command54='sudo -S docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+str(i)+'_0000.nii.gz'
 			os.system(command53)
@@ -685,7 +685,7 @@ def singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -714,7 +714,7 @@ def singularity():
 					os.system(command21)
 					
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/')):
 				command219='rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
 				command222='sudo -S rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
@@ -862,13 +862,13 @@ def manual():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
 		
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			os.system('cd '+before+'/'+str(i)+' && sct_label_utils -i '+str(i)+'.nii.gz'+' -create-viewer 2,3 -o '+str(i)+'_labels_disc.nii.gz')
 	print('\n')
 	print('\033[92m\033[1mRESULTS:\033[0m')
@@ -918,7 +918,7 @@ def reg_aut_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
@@ -969,7 +969,7 @@ def reg_aut_docker():
 		os.system(docker_command)					
 		
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			subprocess.run('docker start vertebral_labeling', shell=True, check=True)
 			command77='cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'
 			command78='cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'	
@@ -1178,7 +1178,7 @@ def reg_aut_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
@@ -1206,7 +1206,7 @@ def reg_aut_singularity():
 					os.system(command21)				
 		
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			if any(arq.endswith('.nii.gz') for arq in os.listdir('vertebral_labeling.simg/home/SCT/')):	
 				command219='rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
 				command222='sudo -S rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
@@ -1340,13 +1340,13 @@ def reg_man():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)	
 		
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			if 'qc_template_manual_'+str(i) in os.listdir(before+'/'+str(i)):
 				shutil.rmtree(before+'/'+str(i)+'/qc_template_manual_'+str(i))
 			os.system('cd '+before+'/'+str(i)+' && sct_register_to_template -i '+str(i)+'.nii.gz'+' -s '+str(i)+'_seg.nii.gz -ldisc '+str(i)+'_labels_disc.nii.gz -c t1 -qc qc_template_manual_'+str(i))
@@ -1399,7 +1399,7 @@ def ext_docker():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -1473,7 +1473,7 @@ def ext_docker():
 		os.system(docker_command)
 	
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			v = []
 			k = []
 			b1 = []
@@ -1583,7 +1583,7 @@ def ext_singularity():
 	path = str(file_paths)
 	dir_list2 = os.listdir(path)
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
@@ -1622,14 +1622,16 @@ def ext_singularity():
     		raise SystemExit(1)		
 				
 	for i in dir_list2:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			v = []
 			k = []
 			b1 = []
 
 			subprocess.run ('cd '+before+'/'+str(i)+' && '+'cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i),  shell=True)			
-			cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			#cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			#cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			cmd_1 = 'singularity exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
+			cmd_2 = 'apptainer exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
 			
 			try:		
 				subprocess.run(cmd_1, shell=True, check=True)
@@ -1724,13 +1726,13 @@ def pack():
 	path = str(file_paths)
 	dir_list = os.listdir(path)
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			print(str(i)+'.nii.gz')
 		
 	before = str(file_paths)
 	
 	for i in dir_list:
-		if not (i.endswith('.txt') or i.endswith('.csv')):
+		if not (i.endswith('.txt') or i.endswith('.csv') or i.endswith('.zip')):
 			os.system('cd '+str(before)+' && zip -r '+str(i)+'.zip'+' '+str(i)+' -x '+str(i)+'/'+str(i)+'.nii.gz')	
 	print ('\033[92m\033[1mDATA PACKED AND READY TO GO!\033[0m')
 	print ('\033[94m\033[1mZIP files located at: '+str(before)+'\033[0m')		
