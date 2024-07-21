@@ -298,7 +298,11 @@ def modal_docker():
 		try:
 			subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 		except subprocess.CalledProcessError as e:
-			subprocess.run('docker start vertebral_labeling', shell=True, check=True)	
+			subprocess.run('docker start vertebral_labeling', shell=True, check=True)
+			
+		os.environ['OMP_NUM_THREADS'] = '1'
+		os.environ['MKL_NUM_THREADS'] = '1'
+		os.environ['OPENBLAS_NUM_THREADS'] = '1'		
 
 		command1 = 'cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/SCT/'+os.path.basename(str(i))+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
 		command2 = 'cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'sudo docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/SCT/'+os.path.basename(str(i))+'.nii.gz'+' && '+'sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
@@ -456,6 +460,11 @@ def modal_singularity():
 			command26='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
 			os.system(command25)			
 		update_progress_bar(idx + 1, len(file_paths))
+		
+		os.environ['OMP_NUM_THREADS'] = '1'
+		os.environ['MKL_NUM_THREADS'] = '1'
+		os.environ['OPENBLAS_NUM_THREADS'] = '1'
+				
 		os.system ('cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz","")))
 		command27='cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'.nii.gz'
 		command28='cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'sudo cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'.nii.gz'
@@ -1852,8 +1861,8 @@ def ext_singularity():
 		update_progress_bar(idx + 1, len(file_paths))
 		
 		subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)		
-		cmd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-		cmd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+		cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+		cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 		try:		
 			subprocess.run(cmd_1, shell=True, check=True)
 		except subprocess.CalledProcessError:	

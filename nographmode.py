@@ -271,7 +271,11 @@ def modal_docker():
 			try:
 				subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 			except subprocess.CalledProcessError as e:
-				subprocess.run('docker start vertebral_labeling', shell=True, check=True)	
+				subprocess.run('docker start vertebral_labeling', shell=True, check=True)
+				
+			os.environ['OMP_NUM_THREADS'] = '1'
+			os.environ['MKL_NUM_THREADS'] = '1'
+			os.environ['OPENBLAS_NUM_THREADS'] = '1'		
 
 			command1 = 'cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
 			command2 = 'cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
@@ -416,7 +420,12 @@ def modal_singularity():
 				command25='rm vertebral_labeling.simg/home/SCT/*nii.gz'
 				command26='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
 				#get_exit(command25, command26)
-				os.system('rm '+enigma_folder+'/vertebral_labeling.simg/home/SCT/*nii.gz')			
+				os.system('rm '+enigma_folder+'/vertebral_labeling.simg/home/SCT/*nii.gz')
+			
+			os.environ['OMP_NUM_THREADS'] = '1'
+			os.environ['MKL_NUM_THREADS'] = '1'
+			os.environ['OPENBLAS_NUM_THREADS'] = '1'
+							
 			os.system ('cd '+before+'/'+str(i))
 			command27='cd '+before+'/'+str(i)+' && '+'cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
 			command28='cd '+before+'/'+str(i)+' && '+'sudo cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+str(i)+'.nii.gz'
@@ -1619,8 +1628,8 @@ def ext_singularity():
 			b1 = []
 
 			subprocess.run ('cd '+before+'/'+str(i)+' && '+'cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i),  shell=True)			
-			cmd_1='singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_2='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
+			cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 			
 			try:		
 				subprocess.run(cmd_1, shell=True, check=True)
