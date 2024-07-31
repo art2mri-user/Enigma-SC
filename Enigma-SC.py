@@ -245,6 +245,10 @@ def modal_docker():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -294,7 +298,6 @@ def modal_docker():
 			subprocess.run(loww2, shell=True, check=True)		
 
 	for idx, i in enumerate(file_paths): 
-		update_progress_bar(idx + 1, len(file_paths))
 		try:
 			subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 		except subprocess.CalledProcessError as e:
@@ -304,7 +307,7 @@ def modal_docker():
 		os.environ['MKL_NUM_THREADS'] = '1'
 		os.environ['OPENBLAS_NUM_THREADS'] = '1'		
 
-		command1 = 'cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/SCT/'+os.path.basename(str(i))+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
+		command1 = 'cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/SCT/'+os.path.basename(str(i))+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py 2> /dev/null'
 		command2 = 'cd '+before+'/'+os.path.basename(str(i).replace(".nii.gz",""))+' && '+'sudo docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/SCT/'+os.path.basename(str(i))+'.nii.gz'+' && '+'sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
 		os.system(command1)
 											
@@ -337,6 +340,7 @@ def modal_docker():
 		command15='docker exec -it vertebral_labeling rm -r /home/SCT/qc_'+os.path.basename(str(i))
 		command16='sudo docker exec -it vertebral_labeling rm -r /home/SCT/qc_'+os.path.basename(str(i))
 		os.system(command15)
+		update_progress_bar(idx + 1, len(file_paths))
 					
 	command17='docker stop vertebral_labeling'
 	command18='docker stop vertebral_labeling'
@@ -422,6 +426,10 @@ def modal_singularity():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -459,7 +467,7 @@ def modal_singularity():
 			command25='rm vertebral_labeling.simg/home/SCT/*nii.gz'
 			command26='sudo rm vertebral_labeling.simg/home/SCT/*nii.gz'
 			os.system(command25)			
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		
 		os.environ['OMP_NUM_THREADS'] = '1'
 		os.environ['MKL_NUM_THREADS'] = '1'
@@ -474,11 +482,11 @@ def modal_singularity():
 		os.system(command29)				
 		try:
 			command31='singularity exec --writable --bind '+before+':/home/SCT '+enigma_folder+'/vertebral_labeling.simg/ python3 /spine.py'
-			command32 = 'singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'						
+			command32 = 'singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py 2> /dev/null'						
 			subprocess.run(command32, shell=True, check=True)
 		except subprocess.CalledProcessError:
 			command33='apptainer exec --writable vertebral_labeling.simg/ python3 /spine.py'
-			command34='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'
+			command34='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py 2> /dev/null'
 			subprocess.run(command34, shell=True, check=True)
 		command35='chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'_seg.nii.gz'
 		command36='sudo chmod -R 777 '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'_seg.nii.gz'
@@ -502,7 +510,8 @@ def modal_singularity():
 		except subprocess.CalledProcessError:
 			command51='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ rm -f /home/SCT/'+os.path.basename(str(i))+'.nii.gz'
 			command52='sudo apptainer exec --writable --nv vertebral_labeling.simg/ rm -f /home/SCT/'+os.path.basename(str(i))+'.nii.gz'	
-			subprocess.run(command51, shell=True, check=True)	
+			subprocess.run(command51, shell=True, check=True)
+		update_progress_bar(idx + 1, len(file_paths))		
 	progress_label.config(text="SEGMENTATION FINISHED!")
 	progress_window.update()
 	progress_window.after(4000, progress_window.destroy)
@@ -570,6 +579,10 @@ def docker():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -623,7 +636,7 @@ def docker():
 
 
 	for idx,i in enumerate(file_paths):
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		command53='docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+os.path.basename(str(i))+'_0000.nii.gz'
 		command54='sudo -S docker cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz vertebral_labeling:/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/'+os.path.basename(str(i))+'_0000.nii.gz'
 		os.system(command53)
@@ -682,7 +695,8 @@ def docker():
 		os.system('docker exec -it vertebral_labeling chmod -R 777 qc')
 		os.system('docker cp vertebral_labeling:/qc'+' '+str(i)+'/'+'qc_labeled_'+os.path.basename(str(i)))
 		os.system('docker exec -it vertebral_labeling rm -rf qc')
-		os.system('docker exec -it vertebral_labeling rm -f /*.nii.gz')		
+		os.system('docker exec -it vertebral_labeling rm -f /*.nii.gz')
+		update_progress_bar(idx + 1, len(file_paths))		
 		
 		
 					
@@ -772,6 +786,12 @@ def singularity():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	################################
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+    	################################
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -808,7 +828,7 @@ def singularity():
 			command222='sudo -S rm vertebral_labeling.simg/home/datav2/nnUNet_raw/Dataset761_SCT/imagesTs/*nii.gz'
 			exit238 = subprocess.run(command219, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 			os.system(command219)	
-		update_progress_bar(idx + 1, len(file_paths))
+		#update_progress_bar(idx + 1, len(file_paths))
 		command67='cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder
 		command68='sudo cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder
 		os.system(command67)
@@ -821,19 +841,17 @@ def singularity():
 		os.system(command73)
 		try:
 			subprocess.run(["singularity --version"], check=True, shell=True)
-			command_1 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-			command_12 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-			command_2 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-			command_22= 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-			exit333 = subprocess.run(command_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit333 != 0:
-				command111 = command_12
-			else:
-				command111 = command_1
+			command_1 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py 2>/dev/null'
+			command_12 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py 2>/dev/null'
+			command_2 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py 2>/dev/null'
+			command_22= 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py 2>/dev/null'
 			try:
-        			subprocess.check_call(command111, shell=True, stderr=subprocess.DEVNULL)	
-			except subprocess.CalledProcessError as e:
-				pass  
+        			subprocess.run(command_1, shell=True)	
+			except subprocess.CalledProcessError:
+				try:
+					subprocess.run(command_12, shell=True)  
+				except subprocess.CalledProcessError:
+					pass
 			dire = 'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'
 			file1 = os.path.basename(str(i))+'.nii.gz'
 			way = os.path.join(dire, file1)	     				
@@ -842,40 +860,14 @@ def singularity():
 			else:	
 				print("\033[93mTried to predict on GPU, but your GPU is not able to work on this task. Please check your CUDA settings\033[0m")
 				print('\033[95m\033[1mNow trying to perform on CPU, this may take much more time to finish\033[0m')
-				exit339 = subprocess.run(command_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit339 != 0:
-					command211 = command_22
-				else:
-					command211 = command_2
-				subprocess.run(command211, shell=True)
+				try:
+					subprocess.run(command_2, shell=True)
+				except subprocess.CalledProcessError:		
+					subprocess.run(command_22, shell=True)
+					
 		except subprocess.CalledProcessError:
-			command_11 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-			command_11_1 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-			command_22 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-			command_22_2 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-			exit3333 = subprocess.run(command_11, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-			if exit3333 != 0:
-				command1111 = command_11_1
-			else:
-				command1111 = command_11
-			try:
-        			subprocess.check_call(command1111, shell=True, stderr=subprocess.DEVNULL)	
-			except subprocess.CalledProcessError as e:
-				pass  
-			dire = 'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'
-			file1 = os.path.basename(str(i))+'.nii.gz'
-			way = os.path.join(dire, file1)	     				
-			if os.path.exists(way):
-				print('OK')
-			else:	
-				print("\033[93mTried to predict on GPU, but your GPU is not able to work on this task. Please check your CUDA settings\033[0m")
-				print('\033[95m\033[1mNow trying to perform on CPU, this may take much more time to finish\033[0m')
-				exit338 = subprocess.run(command_22, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit338 != 0:
-					command221 = command_22_2
-				else:
-					command221 = command_22
-				subprocess.run(command_221, shell=True)
+			print('AUTOMATED LABELING FAILED')			
+
 		command75='chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+os.path.basename(str(i))+'.nii.gz'
 		command76='sudo chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+os.path.basename(str(i))+'.nii.gz'			
 		os.system(command75)
@@ -898,6 +890,7 @@ def singularity():
 			
 		os.system('mv -v '+enigma_folder+'/vertebral_labeling.simg/home/'+os.getenv('USER')+'/qc '+str(i)+'/qc_labeled_'+os.path.basename(str(i)))
 		os.system('rm '+enigma_folder+'/vertebral_labeling.simg/*nii.gz')
+		update_progress_bar(idx + 1, len(file_paths))
 		
 		
 	progress_label.config(text="AUTOMATED LABELING FINISHED!")
@@ -968,6 +961,10 @@ def manual():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -975,8 +972,9 @@ def manual():
 		progress_window.update()	
 		
 	for idx, i in enumerate(file_paths):
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		os.system('cd '+str(i)+' && sct_label_utils -i '+os.path.basename(str(i))+'.nii.gz'+' -create-viewer 2,3 -o '+os.path.basename(str(i))+'_labels_disc.nii.gz')
+		update_progress_bar(idx + 1, len(file_paths))
 	progress_label.config(text="Labeling Done!")
 	progress_window.update()
 	progress_window.after(4000, progress_window.destroy)
@@ -1043,6 +1041,10 @@ def reg_aut_docker():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
@@ -1096,8 +1098,8 @@ def reg_aut_docker():
 		os.system(docker_command)				
 		
 	for idx, i in enumerate(file_paths):
-		update_progress_bar(idx + 1, len(file_paths))
-		update_progress_bar(idx + 1, len(file_paths))
+		#update_progress_bar(idx + 1, len(file_paths))
+		
 		try:
 			subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 		except subprocess.CalledProcessError as e:
@@ -1242,7 +1244,8 @@ def reg_aut_docker():
 		os.system(command165)
 		command167='docker exec -it vertebral_labeling rm -f /home/SCT/'+os.path.basename(str(i))+'_seg_labeled.nii.gz'
 		command168='sudo docker exec -it vertebral_labeling rm -f /home/SCT/'+os.path.basename(str(i))+'_seg_labeled.nii.gz'
-		os.system(command167)		
+		os.system(command167)
+		update_progress_bar(idx + 1, len(file_paths))		
 	command169='docker stop vertebral_labeling'
 	command170='docker stop vertebral_labeling'
 	os.system(command169)
@@ -1327,6 +1330,10 @@ def reg_aut_singularity():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -1364,7 +1371,7 @@ def reg_aut_singularity():
 			command219='rm vertebral_labeling.simg/home/SCT/straightening.cache'
 			command222='sudo -S rm vertebral_labeling.simg/home/SCT/straightening.cache'
 			os.system(command219)
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		command171='cd '+before+'/'+os.path.basename(str(i))+' && '+'cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'.nii.gz'
 		command172='cd '+before+'/'+os.path.basename(str(i))+' && '+'sudo cp '+str(i)+'/'+os.path.basename(str(i))+'.nii.gz '+enigma_folder+'/vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'.nii.gz'
 		os.system(command171)
@@ -1436,7 +1443,8 @@ def reg_aut_singularity():
 		os.system('mv '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/warp_template2anat.nii.gz '+before+'/'+os.path.basename(str(i))+'/warp_template2anat.nii.gz')
 		os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'.nii.gz')
 		os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'_seg.nii.gz')
-		os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')								
+		os.system('rm '+enigma_folder+'/'+'vertebral_labeling.simg/home/SCT/'+os.path.basename(str(i))+'_seg_labeled.nii.gz')
+		update_progress_bar(idx + 1, len(file_paths))								
 	progress_label.config(text="AUTOMATED REGISTRATION FINISHED!")
 	progress_window.update()
 	progress_window.after(4000, progress_window.destroy)
@@ -1511,6 +1519,10 @@ def reg_man():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -1518,10 +1530,11 @@ def reg_man():
 		progress_window.update()	
 		
 	for idx, i in enumerate(file_paths):
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		if 'qc_template_manual_'+os.path.basename(str(i)) in os.listdir(before+'/'+os.path.basename(str(i))):
 			shutil.rmtree(before+'/'+os.path.basename(str(i))+'/qc_template_manual_'+os.path.basename(str(i)))
 		os.system('cd '+str(i)+' && sct_register_to_template -i '+os.path.basename(str(i))+'.nii.gz'+' -s '+os.path.basename(str(i))+'_seg.nii.gz -ldisc '+os.path.basename(str(i))+'_labels_disc.nii.gz -c t1 -qc qc_template_manual_'+os.path.basename(str(i)))
+		update_progress_bar(idx + 1, len(file_paths))
 		
 	progress_label.config(text="MANUAL REGISTRATION FINISHED!")
 	progress_window.update()
@@ -1616,6 +1629,10 @@ def ext_docker():
 
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
+	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
 
 	exit_code = os.system("docker --version")
 	if exit_code != 0:
@@ -1673,7 +1690,7 @@ def ext_docker():
 		v = []
 		k = []
 		b1 = []
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		try:
 			subprocess.run('docker start vertebral_labeling', shell=True, check=True, stderr=subprocess.DEVNULL)
 		except subprocess.CalledProcessError as e:
@@ -1724,6 +1741,7 @@ def ext_docker():
 		with open(eccf, 'a', newline='') as csv_file:
 			writer = csv.writer(csv_file)
 			writer.writerow(b1)
+		update_progress_bar(idx + 1, len(file_paths))	
 			
 	command169='docker stop vertebral_labeling'
 	command170='docker stop vertebral_labeling'
@@ -1832,6 +1850,10 @@ def ext_singularity():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	path = enigma_folder+'/vertebral_labeling.simg/home'
 	dir_list = os.listdir(path)
 	for i in dir_list:
@@ -1858,13 +1880,13 @@ def ext_singularity():
 		v = []
 		k = []
 		b1 = []
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		
 		subprocess.run('cd '+before+'/'+os.path.basename(str(i))+' && '+'cp -r '+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+os.path.basename(str(i)), shell=True)		
 		#cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 		#cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-		cmd_1 = 'singularity exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
-		cmd_2 = 'apptainer exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'		
+		cmd_1 = 'singularity exec --writable --no-home --containall --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
+		cmd_2 = 'apptainer exec --writable --no-home --containall --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'		
 		try:		
 			subprocess.run(cmd_1, shell=True, check=True)
 		except subprocess.CalledProcessError:	
@@ -1906,7 +1928,8 @@ def ext_singularity():
 			writer.writerow(k)
 		with open(eccf, 'a', newline='') as csv_file:
 			writer = csv.writer(csv_file)
-			writer.writerow(b1)				
+			writer.writerow(b1)
+		update_progress_bar(idx + 1, len(file_paths))					
 										
 	progress_label.config(text="Extraction Done!")
 	progress_window.update()
@@ -1974,6 +1997,10 @@ def pack():
 	progress_text = tk.Label(progress_window, text="")
 	progress_text.pack()
 	
+	progress_bar["value"] = 0
+	progress_text["text"] = "0% done"
+	progress_window.update()
+	
 	def update_progress_bar(current, total):
 		progress_percent = int((current / total) * 99)
 		progress_bar["value"] = progress_percent
@@ -1981,8 +2008,9 @@ def pack():
 		progress_window.update()	
 	
 	for idx, i in enumerate(file_paths):
-		update_progress_bar(idx + 1, len(file_paths))
+		
 		os.system('cd '+str(before)+' && zip -r '+os.path.basename(str(i))+'.zip'+' '+os.path.basename(str(i))+' -x '+os.path.basename(str(i))+'/'+os.path.basename(str(i))+'.nii.gz')
+		update_progress_bar(idx + 1, len(file_paths))
 	progress_label.config(text="Packing Done!")
 	progress_window.update()
 	progress_window.after(4000, progress_window.destroy)	

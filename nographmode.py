@@ -277,7 +277,7 @@ def modal_docker():
 			os.environ['MKL_NUM_THREADS'] = '1'
 			os.environ['OPENBLAS_NUM_THREADS'] = '1'		
 
-			command1 = 'cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
+			command1 = 'cd '+before+'/'+str(i)+' && '+'docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py 2> /dev/null'
 			command2 = 'cd '+before+'/'+str(i)+' && '+'sudo docker cp '+before+'/'+str(i)+'/'+str(i)+'.nii.gz vertebral_labeling:/home/SCT/'+str(i)+'.nii.gz'+' && '+'sudo docker exec -e SCT_DIR=''/spinalcordtoolbox'' -e PATH=''/spinalcordtoolbox/bin:$PATH'' -it vertebral_labeling python3 spine.py'
 			os.system(command1)
 											
@@ -437,11 +437,11 @@ def modal_singularity():
 			os.system(command29)				
 			try:
 				command31='singularity exec --writable --bind '+before+':/home/SCT '+enigma_folder+'/vertebral_labeling.simg/ python3 /spine.py'
-				command32 = 'singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'	
+				command32 = 'singularity exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py 2> /dev/null'	
 				#get_exit(command31, command32)
 				subprocess.run(command32,shell=True, check=True)		
 			except subprocess.CalledProcessError as e:
-				command33='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py'
+				command33='apptainer exec --writable --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine.py 2> /dev/null'
 				command34='sudo apptainer exec --writable vertebral_labeling.simg/ python3 /spine.py'
 				#get_exit(command33, command34)
 				os.system(command33)
@@ -731,61 +731,34 @@ def singularity():
 			os.system(command73)
 			try:
 				subprocess.run(["singularity --version"], check=True, shell=True)
-				command_1 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_12 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_2 = 'ssingularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				command_22= 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				exit333 = subprocess.run(command_1, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit333 != 0:
-					command111 = command_12
-				else:
-					command111 = command_1
+				command_1 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py 2>/dev/null'
+				command_12 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py 2>/dev/null'
+				command_2 = 'singularity exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py 2>/dev/null'
+				command_22= 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py 2>/dev/null'
 				try:
-        				subprocess.check_call(command111, shell=True, stderr=subprocess.DEVNULL)	
-				except subprocess.CalledProcessError as e:
-					pass  
+        				subprocess.run(command_1, shell=True)	
+				except subprocess.CalledProcessError:
+					try:
+						subprocess.run(command_12, shell=True)  
+					except subprocess.CalledProcessError:
+						pass
 				dire = 'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'
-				file1 = str(i)+'.nii.gz'
+				file1 = os.path.basename(str(i))+'.nii.gz'
 				way = os.path.join(dire, file1)	     				
 				if os.path.exists(way):
 					print('OK')
 				else:	
 					print("\033[93mTried to predict on GPU, but your GPU is not able to work on this task. Please check your CUDA settings\033[0m")
 					print('\033[95m\033[1mNow trying to perform on CPU, this may take much more time to finish\033[0m')
-					exit339 = subprocess.run(command_2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-					if exit339 != 0:
-						command211 = command_22
-					else:
-						command211 = command_2
-					subprocess.run(command211, shell=True)
+					try:
+						subprocess.run(command_2, shell=True)
+					except subprocess.CalledProcessError:		
+						subprocess.run(command_22, shell=True)
+					
 			except subprocess.CalledProcessError:
-				command_11 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_11_1 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cuda.py'
-				command_22 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				command_22_2 = 'apptainer exec --writable --nv --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /home/scripts/cpu.py'
-				exit3333 = subprocess.run(command_11, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-				if exit3333 != 0:
-					command1111 = command_11_1
-				else:
-					command1111 = command_11
-				try:
-        				subprocess.check_call(command1111, shell=True, stderr=subprocess.DEVNULL)	
-				except subprocess.CalledProcessError as e:
-					pass  
-				dire = 'vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'
-				file1 = str(i)+'.nii.gz'
-				way = os.path.join(dire, file1)	     				
-				if os.path.exists(way):
-					print('OK')
-				else:	
-					print("\033[93mTried to predict on GPU, but your GPU is not able to work on this task. Please check your CUDA settings\033[0m")
-					print('\033[95m\033[1mNow trying to perform on CPU, this may take much more time to finish\033[0m')
-					exit338 = subprocess.run(command_22, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-					if exit338 != 0:
-						command221 = command_22_2
-					else:
-						ommand221 = command_22
-					subprocess.run(command_221, shell=True)
+				print('AUTOMATED LABELING FAILED')			
+
+
 			command75='chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'
 			command76='sudo chmod -R 777 vertebral_labeling.simg/home/datav2/inference/761_SCT/preds/'+str(i)+'.nii.gz'			
 			os.system(command75)
@@ -1630,8 +1603,8 @@ def ext_singularity():
 			subprocess.run ('cd '+before+'/'+str(i)+' && '+'cp -r '+before+'/'+str(i)+' '+enigma_folder+'/vertebral_labeling.simg/home/'+str(i),  shell=True)			
 			#cmd_1='singularity exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
 			#cmd_2='apptainer exec --writable --env HOST_USER=$(whoami) --no-home --containall --bind $HOST_TMPDIR:/tmp --bind /dev/null:/etc/resolv.conf ' + enigma_folder + '/vertebral_labeling.simg/ python3 /spine4.py'
-			cmd_1 = 'singularity exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
-			cmd_2 = 'apptainer exec --writable --no-home --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
+			cmd_1 = 'singularity exec --writable --no-home --containall --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
+			cmd_2 = 'apptainer exec --writable --no-home --containall --env HOST_USER=$(whoami) '+enigma_folder+'/vertebral_labeling.simg python3 /spine4.py'
 			
 			try:		
 				subprocess.run(cmd_1, shell=True, check=True)
